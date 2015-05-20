@@ -144,6 +144,14 @@ return array(
                 'error_message' => 'A status message must contain between 1 and 140 characters',
             ),
         ),
+        'Status\\V1\\Rest\\Test\\Validator' => array(
+            0 => array(
+                'required' => true,
+                'validators' => array(),
+                'filters' => array(),
+                'name' => 'user',
+            ),
+        ),
     ),
     'service_manager' => array(
         'factories' => array(

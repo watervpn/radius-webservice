@@ -11,10 +11,12 @@ class AccountMapper
     protected $adapter;
     protected $hydrator;
     protected $entityPrototype;
+    protected $checkMapper;
 
-    public function __construct(AdapterInterface $adapter)
+    public function __construct(AdapterInterface $adapter, $checkMapper = null)
     {
         $this->adapter = $adapter;
+        $this->checkMapper = $checkMapper;
         //$this->hydrator = new ObjectPropertyHydrator();
         //$this->entityPrototype = new Entity;
     }
@@ -26,6 +28,12 @@ class AccountMapper
     }
 
     public function fetch($accountId){
+        return $check = $this->checkMapper->findByUser($accountId);
+        //$account = new AccountEntity();
+        //$account->exchangeArray($check->getArrayCopy());
+        //return $account;
+
+        /*
         $sql = 'SELECT * FROM radcheck WHERE username = ?';
         $resultset = $this->adapter->query($sql, array($accountId));
         //print_r($resultset->toArray());
@@ -33,10 +41,10 @@ class AccountMapper
         if (!$data) {
           //return false;
         }
-
         $entity = new AccountEntity();
         $entity->exchangeArray($data[0]);
         return $entity;
+         */
     }
 
     public function fetchAll(){

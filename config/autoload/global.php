@@ -3,7 +3,7 @@ return array(
     'zf-mvc-auth' => array(
         'authentication' => array(
             'map' => array(
-                'Status\\V1' => 'status',
+                'radius\\V1' => 'status',
             ),
         ),
     ),

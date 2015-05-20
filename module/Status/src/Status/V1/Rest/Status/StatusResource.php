@@ -4,6 +4,7 @@ namespace Status\V1\Rest\Status;
 use StatusLib\MapperInterface;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
+use Status\V1\Rest\Status;
 
 class StatusResource extends AbstractResourceListener
 {
