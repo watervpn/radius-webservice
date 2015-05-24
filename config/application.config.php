@@ -22,6 +22,7 @@ return array(
         'ZF\\Rest',
         'ZF\\Rpc',
         'ZF\\Versioning',
+        'Lib',
         'Status',
         'StatusLib',
         'radius',

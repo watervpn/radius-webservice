@@ -1,6 +1,5 @@
 <?php
-
-namespace radius\V1\Rest\Account;
+namespace Lib\Radius\Mapper;
 
 use Zend\Db\TableGateway\TableGateway;
 
