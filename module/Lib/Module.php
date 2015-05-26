@@ -34,7 +34,6 @@ class Module
                 'Db\Radius' => function ($sm) {
                     return $sm->get('Db\Radius_test');
                 },
-
                 // CheckMapper
                 'Lib\Radius\CheckMapper' =>  function ($sm) {
                     $tableGateway = $sm->get('Lib\Radius\CheckTableGateway');
@@ -47,7 +46,6 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new CheckEntity() );
                     return new TableGateway('radcheck', $adapter, null, $resultSetPrototype);
                 },
-
                 // ReplyMapper
                 'Lib\Radius\ReplyMapper' =>  function ($sm) {
                     $tableGateway = $sm->get('Lib\Radius\ReplyTableGateway');

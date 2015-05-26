@@ -1,7 +1,9 @@
 <?php
 namespace Lib\Radius\Entity;
 
-class CheckEntity
+use Lib\Model\AbstractEntity;
+
+class CheckEntity extends AbstractEntity
 {
     public $id;
     public $username;
@@ -62,7 +64,10 @@ class CheckEntity
         $this->value = $value;
     }
 
-    public function exchangeArray($data)
+    /**
+     * Implement Abstract exchangearray
+     */
+    public function exchangeArray(array $data)
     {
         $this->id            = (!empty($data['id'])) ? $data['id'] : null;
         $this->username      = (!empty($data['username'])) ? $data['username'] : null;
@@ -71,6 +76,9 @@ class CheckEntity
         $this->value         = (!empty($data['value'])) ? $data['value'] : null;
     }
 
+    /**
+     * Implement Abstract getarraycopy
+     */
     public function getArrayCopy()
     {
         return array(

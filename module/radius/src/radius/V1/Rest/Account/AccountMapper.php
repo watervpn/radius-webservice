@@ -48,10 +48,11 @@ class AccountMapper
     }
 
     public function fetchAll(){
-        $select = new Select('radcheck');
-        $paginatorAdapter = new DbSelect($select, $this->adapter);
-        $collection = new AccountCollection($paginatorAdapter);
-        return $collection;
+        return $check = $this->checkMapper->findAll();
+        //$select = new Select('radcheck');
+        //$paginatorAdapter = new DbSelect($select, $this->adapter);
+        //$collection = new AccountCollection($paginatorAdapter);
+        //return $collection;
     }
 
     public function update($id, $data){

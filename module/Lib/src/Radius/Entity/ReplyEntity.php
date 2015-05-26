@@ -1,7 +1,9 @@
 <?php
 namespace Lib\Radius\Entity;
 
-class ReplyEntity
+use Lib\Model\AbstractEntity;
+
+class ReplyEntity extends AbstractEntity
 {
     public $id;
     public $username;
@@ -62,6 +64,9 @@ class ReplyEntity
         $this->value = $value;
     }
 
+    /**
+     * Implement Abstract exchangearray
+     */
     public function exchangeArray($data)
     {
         $this->id            = (!empty($data['id'])) ? $data['id'] : null;
@@ -71,6 +76,9 @@ class ReplyEntity
         $this->value         = (!empty($data['value'])) ? $data['value'] : null;
     }
 
+    /**
+     * Implement Abstract getarraycopy
+     */
     public function getArrayCopy()
     {
         return array(

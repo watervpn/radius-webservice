@@ -25,7 +25,7 @@ class Module implements ApigilityProviderInterface
     {
         return array(
             'factories' => array(
-                'radius\V1\Rest\Account\AccountMapper' =>  function ($sm) {
+                'Radius\Account\AccountMapper' =>  function ($sm) {
                     //$adapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $adapter = $sm->get('Db\Radius');
                     $checkMapper = $sm->get('Lib\Radius\CheckMapper');
