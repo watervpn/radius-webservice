@@ -2,21 +2,17 @@
 namespace Lib\Radius\Mapper;
 
 use Zend\Db\TableGateway\TableGateway;
+use Lib\Model\AbstractMapper;
+use Lib\Model\AbstractEntity;
+use Lib\Model\Exception as Exception;
 
-class UserGroupMapper
+class UserGroupMapper extends AbstractMapper
 {
-    protected $tableGateway;
-
-    public function __construct(TableGateway $tableGateway)
-    {
-        $this->tableGateway = $tableGateway;
-    }
-
-    public function findAll()
-    {
-        $resultSet = $this->tableGateway->select();
-        return $resultSet;
-    }
+    /**
+     * Overwrite MapperAbstract primaryKey 
+     * The db primary key's column name 
+     */
+    protected $primaryKey = 'id';
 
     /**
      * compositeKey = username_groupname
@@ -32,37 +28,56 @@ class UserGroupMapper
         return $row;
     }
 
+
+    /**
+     * Find row by user
+     *
+     * @return Zend\Db\ResultSet\ResultSet
+     */
     public function findByUser($username)
     {
         $rowset = $this->tableGateway->select(array('username' => $username));
-        $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $username");
+        if ($rowset->count() <=0) {
+            throw new Exception\ObjectNotFoundException("Could not find row: [$groupname]");
         }
-        return $row;
+        return $rowset;
     }
 
-    // Todo: return Collection
+    /**
+     * Find row by group
+     *
+     * @return Zend\Db\ResultSet\ResultSet
+     */
     public function findByGroup($groupname)
     {
         $rowset = $this->tableGateway->select(array('groupname' => $groupname));
+        if ($rowset->count() <=0) {
+            throw new Exception\ObjectNotFoundException("Could not find row: [$groupname]");
+        }
+        return $rowset;
+    }
+   
+    /**
+     * Find row by user and group
+     *
+     * @return Zend\Db\ResultSet\ResultSet
+     */
+    public function findByUserGroup($username, $groupname)
+    {
+        $rowset = $this->tableGateway->select(array('username' => $username, 'groupname' => $groupname));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new Exception\ObjectNotFoundException("Could not find row: username [$username] and groupname [$groupname]");
         }
         return $row;
     }
 
-    public function save(UserGroupEntity $userGroup)
+    public function save(AbstractEntity $obj)
     {
-        $data = array(
-            'username' => $userGroup->getUsername(),
-            'groupname'  => $userGroup->getGroupname(),
-            'priority'  => $userGroup->getPriority(),
-        );
+        $data = $obj->getArrayCopy();
 
-        $username = $userGroup->getUsername();
-        $groupname = $userGroup->getGroupname();
+        $username = $obj->getUsername();
+        $groupname = $obj->getGroupname();
         // Insert & Update
         if (!empty($username) && !empty($groupname)) {
             if($this->find($username.'_'.$groupname)){

@@ -1,7 +1,9 @@
 <?php
 namespace Lib\Radius\Entity;
 
-class GroupCheckEntity
+use Lib\Model\AbstractEntity;
+
+class GroupCheckEntity extends AbstractEntity
 {
     public $id;
     public $groupname;
@@ -19,23 +21,23 @@ class GroupCheckEntity
     }
 
     // Getter
-    public function getId($id)
+    public function getId()
     {
         return $this->id;
     }
-    public function getGroupname($groupname)
+    public function getGroupname()
     {
         return $this->groupname;
     }
-    public function getAttribute($attribute)
+    public function getAttribute()
     {
         return $this->attribute;
     }
-    public function getOp($op)
+    public function getOp()
     {
         return $this->op;
     }
-    public function getValue($value)
+    public function getValue()
     {
         return $this->value;
     }
@@ -62,20 +64,32 @@ class GroupCheckEntity
         $this->value = $value;
     }
 
-    public function exchangeArray($data)
+    /**
+     * Implement Abstract exchangearray
+     * Convert array to object
+     * 
+     * @param array
+     */
+    public function exchangeArray(array $data)
     {
         $this->id            = (!empty($data['id'])) ? $data['id'] : null;
-        $this->groupname      = (!empty($data['groupname'])) ? $data['groupname'] : null;
+        $this->groupname     = (!empty($data['groupname'])) ? $data['groupname'] : null;
         $this->attribute     = (!empty($data['attribute'])) ? $data['attribute'] : null;
         $this->op            = (!empty($data['op'])) ? $data['op'] : null;
         $this->value         = (!empty($data['value'])) ? $data['value'] : null;
     }
 
+    /**
+     * Implement Abstract getarraycopy
+     * Convert object to array
+     *
+     * @return array
+     */
     public function getArrayCopy()
     {
         return array(
             'id'         => $this->id,
-            'groupname'   => $this->groupname,
+            'groupname'  => $this->groupname,
             'attribute'  => $this->attribute,
             'op'         => $this->op,
             'value'      => $this->value,

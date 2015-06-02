@@ -21,23 +21,23 @@ class ReplyEntity extends AbstractEntity
     }
 
     // Getter
-    public function getId($id)
+    public function getId()
     {
         return $this->id;
     }
-    public function getUsername($username)
+    public function getUsername()
     {
         return $this->username;
     }
-    public function getAttribute($attribute)
+    public function getAttribute()
     {
         return $this->attribute;
     }
-    public function getOp($op)
+    public function getOp()
     {
         return $this->op;
     }
-    public function getValue($value)
+    public function getValue()
     {
         return $this->value;
     }
@@ -66,8 +66,11 @@ class ReplyEntity extends AbstractEntity
 
     /**
      * Implement Abstract exchangearray
+     * Convert array to object
+     * 
+     * @param array
      */
-    public function exchangeArray($data)
+    public function exchangeArray(array $data)
     {
         $this->id            = (!empty($data['id'])) ? $data['id'] : null;
         $this->username      = (!empty($data['username'])) ? $data['username'] : null;
@@ -78,6 +81,9 @@ class ReplyEntity extends AbstractEntity
 
     /**
      * Implement Abstract getarraycopy
+     * Convert object to array
+     *
+     * @return array
      */
     public function getArrayCopy()
     {

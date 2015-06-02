@@ -21,23 +21,23 @@ class CheckEntity extends AbstractEntity
     }
 
     // Getter
-    public function getId($id)
+    public function getId()
     {
         return $this->id;
     }
-    public function getUsername($username)
+    public function getUsername()
     {
         return $this->username;
     }
-    public function getAttribute($attribute)
+    public function getAttribute()
     {
         return $this->attribute;
     }
-    public function getOp($op)
+    public function getOp()
     {
         return $this->op;
     }
-    public function getValue($value)
+    public function getValue()
     {
         return $this->value;
     }

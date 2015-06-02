@@ -1,7 +1,9 @@
 <?php
 namespace Lib\Radius\Entity;
 
-class UserGroupEntity
+use Lib\Model\AbstractEntity;
+
+class UserGroupEntity extends AbstractEntity
 {
     public $username;
     public $groupname;
@@ -42,7 +44,7 @@ class UserGroupEntity
         $this->priority = $priority;
     }
 
-    public function exchangeArray($data)
+    public function exchangeArray(array $data)
     {
         $this->username       = (!empty($data['username'])) ? $data['username'] : null;
         $this->groupname      = (!empty($data['groupname'])) ? $data['groupname'] : null;
@@ -52,7 +54,7 @@ class UserGroupEntity
     public function getArrayCopy()
     {
         return array(
-            'username'    => $this->id,
+            'username'    => $this->username,
             'groupname'   => $this->groupname,
             'priority'    => $this->priority,
         );

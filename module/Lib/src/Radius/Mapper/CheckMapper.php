@@ -3,6 +3,7 @@ namespace Lib\Radius\Mapper;
 
 use Zend\Db\TableGateway\TableGateway;
 use Lib\Model\AbstractMapper;
+use Lib\Model\Exception as Exception;
 
 class CheckMapper extends AbstractMapper
 {
@@ -12,16 +13,16 @@ class CheckMapper extends AbstractMapper
      */
     protected $primaryKey = 'id';
     
-
     /**
      * Find row by username
      */
     public function findByUser($username)
     {
-        $rowset = $this->tableGateway->select(array('username' => $username));
+        $attribute = 'User-Password';
+        $rowset = $this->tableGateway->select(array('username' => $username, 'attribute' => $attribute));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new Exception\MapperException("Could not find row: [$username]");
         }
         return $row;
     }
