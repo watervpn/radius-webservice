@@ -1,7 +1,7 @@
 <?php
 namespace Lib\Model;
 
-use Zend\Stdlib\Hydrator;
+//use Zend\Stdlib\Hydrator;
 
 Abstract class AbstractEntity
 {
