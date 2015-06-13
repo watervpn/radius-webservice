@@ -67,7 +67,7 @@ class GroupReplyEntity extends AbstractEntity
     public function exchangeArray(array $data)
     {
         $this->id            = (!empty($data['id'])) ? $data['id'] : null;
-        $this->groupname      = (!empty($data['groupname'])) ? $data['groupname'] : null;
+        $this->groupname     = (!empty($data['groupname'])) ? $data['groupname'] : null;
         $this->attribute     = (!empty($data['attribute'])) ? $data['attribute'] : null;
         $this->op            = (!empty($data['op'])) ? $data['op'] : null;
         $this->value         = (!empty($data['value'])) ? $data['value'] : null;
@@ -77,7 +77,7 @@ class GroupReplyEntity extends AbstractEntity
     {
         return array(
             'id'         => $this->id,
-            'groupname'   => $this->groupname,
+            'groupname'  => $this->groupname,
             'attribute'  => $this->attribute,
             'op'         => $this->op,
             'value'      => $this->value,

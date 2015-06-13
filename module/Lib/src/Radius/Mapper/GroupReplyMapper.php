@@ -11,7 +11,7 @@ class GroupReplyMapper extends AbstractMapper
      * Overwrite MapperAbstract primaryKey 
      * The db primary key's column name 
      */
-    protected $primaryKey = 'id';
+    protected $primaryKeys = array('id');
 
     /**
      * Find row by user group
@@ -22,7 +22,7 @@ class GroupReplyMapper extends AbstractMapper
     {
         $rowset = $this->tableGateway->select(array('groupname' => $groupname));
         if ($rowset->count() <=0) {
-            throw new Exception\ObjectNotFoundException("Could not find row: [$groupname]");
+            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [$groupname]");
         }
         return $rowset;
     }
@@ -39,7 +39,7 @@ class GroupReplyMapper extends AbstractMapper
         );
         $row = $rowset->current();
         if (!$row) {
-            throw new Exception\ObjectNotFoundException("Could not find row: groupname [$groupname] and attribute [$attribute]");
+            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: groupname [$groupname] and attribute [$attribute]");
         }
         return $row;
     }

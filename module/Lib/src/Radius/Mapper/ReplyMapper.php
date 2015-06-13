@@ -11,7 +11,7 @@ class ReplyMapper extends AbstractMapper
      * Overwrite MapperAbstract primaryKey 
      * The db primary key's column name 
      */
-    protected $primaryKey = 'id';
+    protected $primaryKeys = array('id');
 
     /**
      * Find row by username
@@ -22,7 +22,7 @@ class ReplyMapper extends AbstractMapper
     {
         $rowset = $this->tableGateway->select(array('username' => $username));
         if ($rowset->count() <= 0) {
-            throw new Exception\ObjectNotFoundException("Could not find row: [$username]");
+            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [$username]");
         }
         return $rowset;
     }
@@ -39,7 +39,7 @@ class ReplyMapper extends AbstractMapper
         );
         $row = $rowset->current();
         if (!$row) {
-            throw new Exception\ObjectNotFoundException("Could not find row: username [$username] and attribute [$attribute]");
+            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: username [$username] and attribute [$attribute]");
         }
         return $row;
     }

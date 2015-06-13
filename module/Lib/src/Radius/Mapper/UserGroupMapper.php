@@ -12,22 +12,7 @@ class UserGroupMapper extends AbstractMapper
      * Overwrite MapperAbstract primaryKey 
      * The db primary key's column name 
      */
-    protected $primaryKey = 'id';
-
-    /**
-     * compositeKey = username_groupname
-     */
-    public function find($compositeKey)
-    {
-        list($username, $groupname) = explode('_', $compositeKey);
-        $rowset = $this->tableGateway->select(array('username' => $username, 'groupname' => $groupname));
-        $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $username");
-        }
-        return $row;
-    }
-
+    protected $primaryKeys = array('username', 'groupname');
 
     /**
      * Find row by user
@@ -38,7 +23,7 @@ class UserGroupMapper extends AbstractMapper
     {
         $rowset = $this->tableGateway->select(array('username' => $username));
         if ($rowset->count() <=0) {
-            throw new Exception\ObjectNotFoundException("Could not find row: [$groupname]");
+            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [$username]");
         }
         return $rowset;
     }
@@ -52,43 +37,91 @@ class UserGroupMapper extends AbstractMapper
     {
         $rowset = $this->tableGateway->select(array('groupname' => $groupname));
         if ($rowset->count() <=0) {
-            throw new Exception\ObjectNotFoundException("Could not find row: [$groupname]");
+            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [$groupname]");
         }
         return $rowset;
     }
-   
+
     /**
-     * Find row by user and group
+     * Update group by array objects
+     * It chcek and delete user from the group if group does not exist in the array objects
+     * It check and add user to the group if user not already belong to the group
      *
-     * @return Zend\Db\ResultSet\ResultSet
+     * @param array of Usergroupentity 
      */
-    public function findByUserGroup($username, $groupname)
-    {
-        $rowset = $this->tableGateway->select(array('username' => $username, 'groupname' => $groupname));
-        $row = $rowset->current();
-        if (!$row) {
-            throw new Exception\ObjectNotFoundException("Could not find row: username [$username] and groupname [$groupname]");
+    public function updateByArrayObjs(array $objs){
+        // if array not exist, delete
+        // findByUser and delete group not exist in pass in $objs
+        $username = $objs[0]->getUsername();
+        try{
+            $groups = $this->findByUser($username);
+        }catch(Exception\ObjectNotFoundException $e){
+            $groups = null;
         }
-        return $row;
-    }
 
-    public function save(AbstractEntity $obj)
-    {
-        $data = $obj->getArrayCopy();
+        $createObjs = $objs;    // UserGroupEntity array objs
+        $deleteObjs = array();  // Usergroupentity array objs
+        $updateObjs = array();  // Usergroupentity array objs
 
-        $username = $obj->getUsername();
-        $groupname = $obj->getGroupname();
-        // Insert & Update
-        if (!empty($username) && !empty($groupname)) {
-            if($this->find($username.'_'.$groupname)){
-                $this->tableGateway->update($data, array('username' => $username, 'groupname' => $groupname));
-            }else{
-                $this->tableGateway->insert($data);
+        // Construct update, create, delete obj lists
+        if(!empty($groups)){
+            foreach($groups as $gIndex => $group){
+                $isDelete = true;
+                // Remove exist group obj from create list
+                foreach($objs as $oIndex => $obj){
+                    if($obj->getGroupname() == $group->getGroupname()){
+                        // Create List
+                        unset($createObjs[$oIndex]);
+                        $isDelete = false;
+                        break;
+                    }
+                }
+                if($isDelete){
+                    // Delete list
+                    $deleteObjs[] = $group;
+                }else{
+                    // Update list
+                    $updateObjs[] = $group;
+                }
             }
-        } else {
-            throw new \Exception('GroupCheck id does not exist');
         }
-    }
 
+        // Process all obj list
+        // Create
+        if(!empty($createObjs)){
+            foreach($createObjs as $obj){
+                if(empty($obj->getGroupname()) || empty($obj->getUsername())){
+                    continue;
+                }
+                $this->save($obj);
+            }
+        }
+        // Delete
+        if(!empty($deleteObjs)){
+            foreach($deleteObjs as $obj){
+                if(empty($obj->getGroupname()) || empty($obj->getUsername())){
+                    continue;
+                }
+                $this->delete($obj);
+            }
+        }
+        // Update
+        if(!empty($updateObjs)){
+            foreach($updateObjs as $obj){
+                if(empty($obj->getGroupname()) || empty($obj->getUsername())){
+                    continue;
+                }
+                $this->save($obj);
+            }
+        }
+
+        echo "delete object";
+        print_r($deleteObjs);
+        echo "create object";
+        print_r($createObjs);
+        echo "Update object";
+        print_r($updateObjs);
+
+    }
 
 }
