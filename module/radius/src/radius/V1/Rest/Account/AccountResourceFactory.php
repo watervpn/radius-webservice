@@ -10,7 +10,7 @@ class AccountResourceFactory
     public function __invoke($services)
     {
         //return new AccountResource();
-        return new AccountResource($services->get('Radius\Account\AccountMapper'));
+        return new AccountResource($services->get('Lib\Radius\AccountRespondent'));
 
     }
 }

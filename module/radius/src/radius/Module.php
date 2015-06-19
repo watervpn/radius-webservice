@@ -23,7 +23,7 @@ class Module implements ApigilityProviderInterface
 
     public function getServiceConfig()
     {
-        return array(
+        /*return array(
             'factories' => array(
                 'Radius\Account\AccountMapper' =>  function ($sm) {
                     //$adapter = $sm->get('Zend\Db\Adapter\Adapter');
@@ -34,6 +34,6 @@ class Module implements ApigilityProviderInterface
                     return new \radius\V1\Rest\Account\AccountMapper($adapter, $checkMapper, $groupMapper, $groupCheckMapper);
                 },
             ),
-        );
+        );*/
     }
 }

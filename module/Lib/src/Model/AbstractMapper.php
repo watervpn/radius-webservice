@@ -16,8 +16,11 @@ Abstract class AbstractMapper
         $this->tableGateway = $tableGateway;
     }
 
+    public function getTableGateway(){
+        return $this->tableGateway;
+    }
     /**
-     * Find a record by pimary key
+     * Filer data array to contain only perimay key's data array
      *
      * @param  mixed $id
      * @return AbstractEntity|TableGateway
@@ -145,6 +148,7 @@ Abstract class AbstractMapper
         // check if any primary keys are empty
         foreach($pks as $pk){
             if(empty($pk)){
+                throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, false));
                 // throw exception
                 return false;
             }

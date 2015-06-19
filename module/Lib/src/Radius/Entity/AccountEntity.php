@@ -1,5 +1,5 @@
 <?php
-namespace radius\V1\Rest\Account;
+namespace Lib\Radius\Entity;
 
 use Lib\Model\AbstractEntity;
 
@@ -33,8 +33,10 @@ class AccountEntity extends AbstractEntity
 
     private $allowGroups = array('pro', 'lite', 'deactivite');
 
-    const ACTIVE = 'Active'; 
-    const INACTIVE = 'Inactive'; 
+    //const ACTIVE = 'Active'; 
+    const ACTIVE = 1; 
+    //const INACTIVE = 'Inactive'; 
+    const INACTIVE = 2; 
 
 
     public function __construct($id = null, $passwd = null, $groups = array(), $status = null, $options = array())
@@ -59,7 +61,7 @@ class AccountEntity extends AbstractEntity
     }
     public function getPasswd()
     {
-        return $this->id;
+        return $this->passwd;
     }
     public function getGroups()
     {
@@ -85,7 +87,7 @@ class AccountEntity extends AbstractEntity
     }
     public function setGroups(array $groups)
     {
-        $this->passwd = $groups;
+        $this->groups = $groups;
     }
     public function setStatus($status)
     {
@@ -172,6 +174,5 @@ class AccountEntity extends AbstractEntity
         $this->status = $array['status'];
         $this->options  = $array['options'];
     }
-
 
 }

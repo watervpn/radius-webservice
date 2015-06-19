@@ -3,18 +3,20 @@ namespace radius\V1\Rest\Account;
 
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
+use Lib\Radius\Entity\AccountEntity;
 use Lib\Model\Exception as Exception;
 
 class AccountResource extends AbstractResourceListener
 {
-    protected $mapper;
+    protected $respondent;
 
-    public function __construct($mapper)
+    public function __construct($respondent)
     {
-        $this->mapper = $mapper;
+        $this->respondent = $respondent;
     }
     /**
      * Create a resource
+     * HTTP HOST method
      *
      * @param  mixed $data
      * @return ApiProblem|mixed
@@ -22,13 +24,7 @@ class AccountResource extends AbstractResourceListener
     public function create($data)
     {
         //return new ApiProblem(405, 'The POST method has not been defined');
-        try{
-            $account = $this->mapper->find($data->account_id);
-            return new ApiProblem(405, "Account: {$data->account_id} already exist!");
-        }catch(Exception\ObjectNotFoundException $e){
-            $account = new AccountEntity($data->account_id, $data->passwd, $data->groups, $data->status);
-            $this->mapper->save($account);
-        }
+        $this->respondent->create($data);
     }
 
     /**
@@ -55,6 +51,7 @@ class AccountResource extends AbstractResourceListener
 
     /**
      * Fetch a resource
+     * HTTP GET method
      *
      * @param  mixed $id
      * @return ApiProblem|mixed
@@ -62,27 +59,24 @@ class AccountResource extends AbstractResourceListener
     public function fetch($id)
     {
         //return new ApiProblem(405, 'The GET method has not been defined for individual resources');
-        try{
-            return $this->mapper->find($id);
-        }catch(Exception\ObjectNotFoundException $e){
-            return new ApiProblem(404, "Account Not Found {$id} error: [{$e->getMessage()}]");
-        }
+        return $this->respondent->fetch($id);
     }
 
     /**
      * Fetch all or a subset of resources
+     * HTTP GET method for collections
      *
      * @param  array $params
      * @return ApiProblem|mixed
      */
     public function fetchAll($params = array())
     {
-        //return new ApiProblem(405, 'The GET method has not been defined for collections');
-        return $this->mapper->findAll();
+        return $this->respondent->fetchAll($data);
     }
 
     /**
      * Patch (partial in-place update) a resource
+     * HTTP PATCH method
      *
      * @param  mixed $id
      * @param  mixed $data
@@ -90,17 +84,8 @@ class AccountResource extends AbstractResourceListener
      */
     public function patch($id, $data)
     {
-        return new ApiProblem(405, 'The PATCH method has not been defined for individual resources');
-        try{
-            $account = $this->mapper->find($id);
-            if(isset($data->passwd)){ $account->setPasswd($data->passwd); }
-            if(isset($data->groups)){ $account->setGroups($data->groups); }
-            if(isset($data->status)){ $account->setStatus($data->status); }
-            $this->mapper->save($account);
-        }catch(Exception\ObjectNotFoundException $e){
-            //return new ApiProblem(405, 'The POST method has not been defined');
-        }
-    }
+        return $this->respondent->update(id, $data);
+   }
 
     /**
      * Replace a collection or members of a collection
@@ -115,6 +100,7 @@ class AccountResource extends AbstractResourceListener
 
     /**
      * Update a resource
+     * HTTP PUT method
      *
      * @param  mixed $id
      * @param  mixed $data
@@ -122,15 +108,6 @@ class AccountResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
-        try{
-            $account = $this->mapper->find($id);
-            if(isset($data->passwd)){ $account->setPasswd($data->passwd); }
-            if(isset($data->groups)){ $account->setGroups($data->groups); }
-            if(isset($data->status)){ $account->setStatus($data->status); }
-            $this->mapper->save($account);
-        }catch(Exception\ObjectNotFoundException $e){
-            //return new ApiProblem(405, 'The POST method has not been defined');
-        }
+        return $this->respondent->update(id, $data);
     }
 }

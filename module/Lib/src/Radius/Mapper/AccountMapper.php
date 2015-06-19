@@ -1,6 +1,6 @@
 <?php
 
-namespace radius\V1\Rest\Account;
+namespace Lib\Radius\Mapper;
 
 use Zend\Db\Sql\Select;
 use Zend\Db\Adapter\AdapterInterface;
@@ -8,25 +8,30 @@ use Zend\Paginator\Adapter\DbSelect;
 use Lib\Model\AbstractEntity;
 use Lib\Radius\Entity\CheckEntity;
 use Lib\Radius\Entity\UserGroupEntity;
+use Lib\Radius\Entity\AccountEntity;
 use Lib\Model\Exception as Exception;
 
 class AccountMapper
 {
     protected $adapter;
-    //protected $entityPrototype;
+    protected $entity;
     protected $checkMapper;
     protected $groupMapper;
     protected $groupCheckMapper;
 
-    public function __construct(AdapterInterface $adapter, $checkMapper = null, $groupMapper = null, $groupCheckMapper)
+    public function __construct(AdapterInterface $adapter, $entity, $checkMapper = null, $groupMapper = null, $groupCheckMapper)
     {
         $this->adapter = $adapter;
         $this->checkMapper = $checkMapper;
         $this->groupMapper = $groupMapper;
         $this->groupCheckMapper = $groupCheckMapper;
-        //$this->entityPrototype = new Entity;
+        $this->entity = $entity;
     }
 
+    public function getEntity(){
+        return $this->entity;
+
+    }
     /**
      * Save account
      *
@@ -69,7 +74,13 @@ class AccountMapper
 
             // user is deactive if it belongs to deactivite group else is active
             (in_array('deactivite', $groupValues) ? $status = AccountEntity::INACTIVE : $status = AccountEntity::ACTIVE);
-             return $account = new AccountEntity($check->getUsername(), $check->getValue(), $groupValues, $status, array('')); 
+             //return $account = new AccountEntity($check->getUsername(), $check->getValue(), $groupValues, $status, array('')); 
+            $this->entity->setId($check->getUsername());
+            $this->entity->setPasswd($check->getValue());
+            $this->entity->setGroups($groupValues);
+            $this->entity->setStatus($status);
+            $this->entity->setOptions(array());
+            return $this->entity;
 
         }catch(\Exception $e){
             throw $e;
@@ -107,8 +118,15 @@ class AccountMapper
                // if user has no group skip
             }
             (in_array('deactivite', $groupValues) ? $status = AccountEntity::INACTIVE : $status = AccountEntity::ACTIVE);
+
             // Create account Entity
-            $accounts[] = new AccountEntity($check->getUsername(), $check->getValue(), $groupValues, $status, array('')); 
+            $this->entity->setId( $check->getUsername() );  
+            $this->entity->setPasswd( $check->getValue() );  
+            $this->entity->setGroups( $groupValues );  
+            $this->entity->setStatus( $status );  
+            $this->entity->setOptions( array() );  
+            $accounts[] = clone $this->entity;
+            //$accounts[] = new AccountEntity($check->getUsername(), $check->getValue(), $groupValues, $status, array('')); 
         }
         return $accounts;
         //$select = new Select('radcheck');
@@ -121,8 +139,9 @@ class AccountMapper
      * @param array $item 
      * @return Entity
      */
-    protected function createEntity(array $item)
+    public function createEntity()
     {
+        echo "=====test==========";
         //return $this->hydrator->hydrate($item, $this->entityPrototype);
     }
 

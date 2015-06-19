@@ -87,40 +87,29 @@ class UserGroupMapper extends AbstractMapper
         }
 
         // Process all obj list
-        // Create
-        if(!empty($createObjs)){
-            foreach($createObjs as $obj){
-                if(empty($obj->getGroupname()) || empty($obj->getUsername())){
-                    continue;
+        $objList = array('create' => $createObjs, 'delete' => $deleteObjs, 'update' => $updateObjs);
+        foreach($objList as $action => $objs){
+            if(!empty($objs)){
+                foreach($objs as $obj){
+                    if(empty($obj->getGroupname()) || empty($obj->getUsername())){
+                        continue;
+                    }
+                    if($action == 'create' || $action == 'update'){
+                        $this->save($obj);
+                    }elseif($action == 'delete'){
+                        $this->delete($obj);
+                    }
                 }
-                $this->save($obj);
             }
         }
-        // Delete
-        if(!empty($deleteObjs)){
-            foreach($deleteObjs as $obj){
-                if(empty($obj->getGroupname()) || empty($obj->getUsername())){
-                    continue;
-                }
-                $this->delete($obj);
-            }
-        }
-        // Update
-        if(!empty($updateObjs)){
-            foreach($updateObjs as $obj){
-                if(empty($obj->getGroupname()) || empty($obj->getUsername())){
-                    continue;
-                }
-                $this->save($obj);
-            }
-        }
-
+        /*
+        // Debug message
         echo "delete object";
         print_r($deleteObjs);
         echo "create object";
         print_r($createObjs);
         echo "Update object";
-        print_r($updateObjs);
+        print_r($updateObjs);*/
 
     }
 

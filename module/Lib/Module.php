@@ -27,10 +27,17 @@ class Module
     {
         return array(
             'factories' => array(
+                /*
+                 * Data source
+                 */
                 // Radius db Abstract
                 'Db\Radius' => function ($sm) {
                     return $sm->get('Db\Radius_test');
                 },
+
+                /*
+                 * Mapper - tablegateway
+                 */
                 // CheckMapper
                 'Lib\Radius\CheckMapper' =>  function ($sm) {
                     $tableGateway = $sm->get('Lib\Radius\CheckTableGateway');
@@ -85,6 +92,28 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Radius\Entity\UserGroupEntity() );
                     return new TableGateway('radusergroup', $adapter, null, $resultSetPrototype);
+                },
+
+                /*
+                 * Mapper - composite of sub mappers
+                 */
+                // AccountMapper 
+                'Lib\Radius\AccountMapper' =>  function ($sm) {
+                    //$adapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $adapter = $sm->get('Db\Radius');
+                    $entity = new Radius\Entity\AccountEntity();
+                    $checkMapper = $sm->get('Lib\Radius\CheckMapper');
+                    $groupMapper = $sm->get('\Lib\Radius\UserGroupMapper');
+                    $groupCheckMapper = $sm->get('\Lib\Radius\GroupCheckMapper');
+                    return new Radius\Mapper\AccountMapper($adapter, $entity, $checkMapper, $groupMapper, $groupCheckMapper);
+                },
+
+                /*
+                 * Web Service Respondent 
+                 */
+                'Lib\Radius\AccountRespondent' =>  function ($sm) {
+                    $accountMapper = $sm->get('\Lib\Radius\AccountMapper');
+                    return new Radius\Respondent\AccountRespondent($accountMapper);
                 },
             ),
         );
