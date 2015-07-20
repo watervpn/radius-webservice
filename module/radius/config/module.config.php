@@ -144,12 +144,14 @@ return array(
     'input_filter_specs' => array(
         'radius\\V1\\Rest\\Account\\Validator' => array(
             0 => array(
-                'required' => true,
+                'required' => false,
                 'validators' => array(),
                 'filters' => array(),
                 'name' => 'account_id',
                 'description' => 'Unique radius account id',
                 'error_message' => 'Missing radius account id',
+                'allow_empty' => true,
+                'continue_if_empty' => true,
             ),
             1 => array(
                 'required' => false,
@@ -168,6 +170,12 @@ $option = array(
     \'status\' => \'active\',
     \'expire\' => \'unixtimestamp\'
 );',
+            ),
+            3 => array(
+                'required' => false,
+                'validators' => array(),
+                'filters' => array(),
+                'name' => 'status',
             ),
         ),
     ),

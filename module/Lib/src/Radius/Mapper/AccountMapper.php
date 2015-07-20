@@ -38,16 +38,36 @@ class AccountMapper
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function save(AbstractEntity $obj){
+    public function save(AccountEntity $obj){
         $data = $obj->getArrayCopy();
-        //Todo: find check record : check user exist or not
-        $check = new CheckEntity(null, $data['id'], 'User-Password', ':=', $data['passwd']);
+        // RadCheck
+        try{
+            // Update
+            $check = $this->checkMapper->findByUserAttrOp($data['id'], 'User-Password', ':=');
+            if(isset($data['passwd'])){ $check->setValue($data['passwd']); }
+        }catch(Exception\ObjectNotFoundException $e){
+            // Insert
+            $check = new CheckEntity(null, $data['id'], 'User-Password', ':=', $data['passwd']);
+        }
+        // RadUserGroup
         $groups = array();
-        foreach($data['groups'] as $group){
-            $groups[] = new UserGroupEntity($data['id'], $group, '1');
+        if( !empty($data['groups']) && is_array($data['groups']) ){
+            foreach($data['groups'] as $group){
+                try{
+                    // Update
+                    if(!empty($group)){
+                        $groups[] = $this->groupMapper->find( array($data['id'], $group) );
+                    }
+                }catch(Exception\ObjectNotFoundException $e){
+                    // Insert
+                    if(!empty($group)){
+                        $groups[] = new UserGroupEntity($data['id'], $group, '1');
+                    }
+                }
+            }
         }
         $this->checkMapper->save($check);
-        $this->groupMapper->updateByArrayObjs($groups);
+        $this->groupMapper->updateByArrayObjs($groups, $check->getUsername());
     }
 
     /**
@@ -56,8 +76,28 @@ class AccountMapper
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function delete(AbstractEntity $obj){
-        $data = $obj->getArrayCopy();
+    public function delete(AccountEntity $obj){
+        try{
+            $check = $this->checkMapper->findByUserAttrOp($obj->getId(), 'User-Password', ':=');
+            $groups = array();
+            foreach($obj->getGroups() as $groupName){
+                $groups[] = $this->groupMapper->find( array($obj->getId(), $groupName) );
+            }
+        }catch(Exception\ObjectNotFoundException $e){
+            throw $e;
+        }catch(\Exception $e){
+            // Log error
+            return;
+        }
+
+        try{
+            foreach($groups as $group){
+                $this->groupMapper->delete($group);
+            }
+            $this->checkMapper->delete($check);
+        }catch(\Exception $e){
+            throw $e;
+        }
     }
 
     /**
@@ -69,8 +109,13 @@ class AccountMapper
     public function find($accountId){
         try{
             $check = $this->checkMapper->findByUserAttrOp($accountId, 'User-Password', ':=');
-            $groups = $this->groupMapper->findByUser($accountId);
-            $groupValues = array_column($groups->toArray(), 'groupname');
+            try{
+                $groups = $this->groupMapper->findByUser($accountId);
+                $groupValues = array_column($groups->toArray(), 'groupname');
+            }catch(Exception\ObjectNotFoundException $e){
+                // set groupValues empty if user doesn't belongs to any group
+                $groupValues = array();
+            }
 
             // user is deactive if it belongs to deactivite group else is active
             (in_array('deactivite', $groupValues) ? $status = AccountEntity::INACTIVE : $status = AccountEntity::ACTIVE);

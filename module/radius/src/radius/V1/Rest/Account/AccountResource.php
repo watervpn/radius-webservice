@@ -12,6 +12,7 @@ class AccountResource extends AbstractResourceListener
 
     public function __construct($respondent)
     {
+        /* @var $respondent Lib\Radius\Respondent\AccountRespondent */
         $this->respondent = $respondent;
     }
     /**
@@ -69,9 +70,9 @@ class AccountResource extends AbstractResourceListener
      * @param  array $params
      * @return ApiProblem|mixed
      */
-    public function fetchAll($params = array())
+    public function fetchAll()
     {
-        return $this->respondent->fetchAll($data);
+        return $this->respondent->fetchAll();
     }
 
     /**
@@ -84,7 +85,7 @@ class AccountResource extends AbstractResourceListener
      */
     public function patch($id, $data)
     {
-        return $this->respondent->update(id, $data);
+        return $this->respondent->update($id, $data);
    }
 
     /**
@@ -108,6 +109,6 @@ class AccountResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        return $this->respondent->update(id, $data);
+        return $this->respondent->update($id, $data);
     }
 }

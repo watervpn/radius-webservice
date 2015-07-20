@@ -49,10 +49,9 @@ class UserGroupMapper extends AbstractMapper
      *
      * @param array of Usergroupentity 
      */
-    public function updateByArrayObjs(array $objs){
+    public function updateByArrayObjs(array $objs, $username = null){
         // if array not exist, delete
         // findByUser and delete group not exist in pass in $objs
-        $username = $objs[0]->getUsername();
         try{
             $groups = $this->findByUser($username);
         }catch(Exception\ObjectNotFoundException $e){

@@ -42,33 +42,36 @@ Abstract class AbstractMapper
      * @param  mixed|array $id
      * @return AbstractEntity|TableGateway
      */
-    public function find($pks)
+    public function find($ids)
     {
         if(empty($this->primaryKeys)){
             return false;
         }
         $data = array();
-        if(is_array($pks)){
+        if(is_array($ids)){
+            if(array_search("", $ids) !== false){
+                throw new \Exception(__CLASS__." function: ".__FUNCTION__."() primary keys can not contain empty value :".print_r($this->ids, false));
+            }
             // verfiy total pass in primary keys 
-            if(count($pks) != count($this->primaryKeys)){
+            if(count($ids) != count($this->primaryKeys)){
                 throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, false));
             }
             // convert to key & value data format
             foreach($this->primaryKeys as $key => $primaryKey){
-                $data[$primaryKey] = current($pks);
-                next($pks);
+                $data[$primaryKey] = current($ids);
+                next($ids);
             }
         }else{
-            // when pks pass in as string (not array) primary key has to be only 1
+            // when ids pass in as string (not array) primary key has to be only 1
             if(count($this->primaryKeys) != 1){
                 throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, false));
             }
-            $data[$this->primaryKeys[0]] = $pks;
+            $data[$this->primaryKeys[0]] = $ids;
         }
         $rowset = $this->tableGateway->select($data);
         $row = $rowset->current();
         if (!$row) {
-            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [".print_r($pks,false)."]");
+            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [".print_r($ids,false)."]");
         }
         return $row;
     }
@@ -95,11 +98,12 @@ Abstract class AbstractMapper
     public function save(AbstractEntity $obj)
     {
         $data = $obj->getArrayCopy();
-        $pks = $this->getPrimaryKeyData($data);
+        // Filter data to only primary key's value
+        $ids = $this->getPrimaryKeyData($data);
         $isInsert = false;
         // check if any primary keys are empty
-        foreach($pks as $pk){
-            if(empty($pk)){
+        foreach($ids as $id){
+            if(empty($id)){
                 $isInsert = true;
                 break;
             }
@@ -109,15 +113,15 @@ Abstract class AbstractMapper
         if ($isInsert) {
             $this->tableGateway->insert($data);
         } else {
-            //if ($this->find($pks)) {
+            //if ($this->find($ids)) {
             try{
-                $this->find($pks);
-                $this->tableGateway->update($data, $pks);
+                $this->find($ids);
+                $this->tableGateway->update($data, $ids);
             }catch (Exception\ObjectNotFoundException $e){
                 $this->tableGateway->insert($data);
             }
             /*} else {
-                throw new Exception\ObjectNotFoundException(__CLASS__.' update error primary key'. print_r($pks, false) .' does not exist');
+                throw new Exception\ObjectNotFoundException(__CLASS__.' update error primary key'. print_r($ids, false) .' does not exist');
             }*/
         }
     }
@@ -143,18 +147,18 @@ Abstract class AbstractMapper
     public function delete(AbstractEntity $obj)
     {
         $data = $obj->getArrayCopy();
-        $pks = $this->getPrimaryKeyData($data);
+        $ids = $this->getPrimaryKeyData($data);
 
         // check if any primary keys are empty
-        foreach($pks as $pk){
-            if(empty($pk)){
+        foreach($ids as $id){
+            if(empty($id)){
                 throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, false));
                 // throw exception
                 return false;
             }
         }
-        if ($this->find($pks)){
-            $this->tableGateway->delete($pks);
+        if ($this->find($ids)){
+            $this->tableGateway->delete($ids);
         }
 
     }
