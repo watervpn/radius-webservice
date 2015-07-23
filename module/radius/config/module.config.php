@@ -147,20 +147,10 @@ return array(
                 'required' => false,
                 'validators' => array(),
                 'filters' => array(),
-                'name' => 'account_id',
-                'description' => 'Unique radius account id',
-                'error_message' => 'Missing radius account id',
-                'allow_empty' => true,
-                'continue_if_empty' => true,
-            ),
-            1 => array(
-                'required' => false,
-                'validators' => array(),
-                'filters' => array(),
                 'name' => 'passwd',
                 'description' => 'Account user password',
             ),
-            2 => array(
+            1 => array(
                 'required' => false,
                 'validators' => array(),
                 'filters' => array(),
@@ -171,11 +161,20 @@ $option = array(
     \'expire\' => \'unixtimestamp\'
 );',
             ),
-            3 => array(
+            2 => array(
                 'required' => false,
                 'validators' => array(),
                 'filters' => array(),
                 'name' => 'status',
+            ),
+            3 => array(
+                'required' => false,
+                'validators' => array(),
+                'filters' => array(),
+                'name' => 'id',
+                'description' => 'account id or user name',
+                'continue_if_empty' => true,
+                'allow_empty' => true,
             ),
         ),
     ),

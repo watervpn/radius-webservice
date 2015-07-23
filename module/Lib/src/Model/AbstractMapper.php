@@ -50,11 +50,11 @@ Abstract class AbstractMapper
         $data = array();
         if(is_array($ids)){
             if(array_search("", $ids) !== false){
-                throw new \Exception(__CLASS__." function: ".__FUNCTION__."() primary keys can not contain empty value :".print_r($this->ids, false));
+                throw new \Exception(__CLASS__." function: ".__FUNCTION__."() primary keys can not contain empty value :".print_r($this->ids, true));
             }
             // verfiy total pass in primary keys 
             if(count($ids) != count($this->primaryKeys)){
-                throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, false));
+                throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, true));
             }
             // convert to key & value data format
             foreach($this->primaryKeys as $key => $primaryKey){
@@ -64,14 +64,14 @@ Abstract class AbstractMapper
         }else{
             // when ids pass in as string (not array) primary key has to be only 1
             if(count($this->primaryKeys) != 1){
-                throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, false));
+                throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, true));
             }
             $data[$this->primaryKeys[0]] = $ids;
         }
         $rowset = $this->tableGateway->select($data);
         $row = $rowset->current();
         if (!$row) {
-            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [".print_r($ids,false)."]");
+            throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [".print_r($ids, true)."]");
         }
         return $row;
     }
@@ -121,7 +121,7 @@ Abstract class AbstractMapper
                 $this->tableGateway->insert($data);
             }
             /*} else {
-                throw new Exception\ObjectNotFoundException(__CLASS__.' update error primary key'. print_r($ids, false) .' does not exist');
+                throw new Exception\ObjectNotFoundException(__CLASS__.' update error primary key'. print_r($ids, true) .' does not exist');
             }*/
         }
     }
@@ -152,7 +152,7 @@ Abstract class AbstractMapper
         // check if any primary keys are empty
         foreach($ids as $id){
             if(empty($id)){
-                throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, false));
+                throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, true));
                 // throw exception
                 return false;
             }

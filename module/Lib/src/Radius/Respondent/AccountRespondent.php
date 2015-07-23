@@ -30,12 +30,11 @@ class AccountRespondent extends AbstractRespondent{
      */
     public function create($data){
         try{
-            $account = $this->mapper->find($data->account_id);
-            return new ApiProblem(405, "Account: {$data->account_id} already exist!");
+            $account = $this->mapper->find($data->id);
+            return new ApiProblem(405, "Account: {$data->id} already exist!");
         }catch(Exception\ObjectNotFoundException $e){
             //$account = new AccountEntity($data->account_id, $data->passwd, $data->groups, $data->status);
             $this->entity->exchangeArray(get_object_vars($data));
-            //$this->mapper->save($account);
             $this->mapper->save($this->entity);
         }
     }
@@ -53,7 +52,6 @@ class AccountRespondent extends AbstractRespondent{
             if(isset($data->passwd)){ $account->setPasswd($data->passwd); }
             if(isset($data->groups)){ $account->setGroups($data->groups); }
             if(isset($data->status)){ $account->setStatus($data->status); }
-      //var_dump($account);
             $this->mapper->save($account);
         }catch(Exception\ObjectNotFoundException $e){
             //return new ApiProblem(405, 'The POST method has not been defined');
@@ -66,7 +64,13 @@ class AccountRespondent extends AbstractRespondent{
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    public function delete($data){
+    public function delete($id){
+        try{
+            $account = $this->mapper->find($id);
+            return $this->mapper->delete($account);
+        }catch(Exception\ObjectNotFoundException $e){
+            //return new ApiProblem(404, "Account Not Found {$id} error: [{$e->getMessage()}]");
+        }
     }
 
     /**
@@ -92,7 +96,7 @@ class AccountRespondent extends AbstractRespondent{
     public function fetchAll(){
         try{
             return $this->mapper->findAll();
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return new ApiProblem(404, "Account Not Found {$id} error: [{$e->getMessage()}]");
         }
     }

@@ -47,9 +47,9 @@ class AccountEntity extends AbstractEntity
         $this->status = $status;
         $this->options = $options;
 
-        if( $status === self::ACTIVE){
+        if( $status == self::ACTIVE){
             $this->activite();
-        }elseif($status === self::INACTIVE){
+        }elseif($status == self::INACTIVE){
             $this->deactivite();
         }
     }
@@ -91,9 +91,9 @@ class AccountEntity extends AbstractEntity
     }
     public function setStatus($status)
     {
-        if( $status === self::ACTIVE){
+        if( $status == self::ACTIVE){
             $this->activite();
-        }elseif($status === self::INACTIVE){
+        }elseif($status == self::INACTIVE){
             $this->deactivite();
         }
     }
@@ -168,11 +168,11 @@ class AccountEntity extends AbstractEntity
      */
     public function exchangeArray(array $array)
     {
-        $this->id     = $array['username'];
-        $this->passwd = $array['value'];
+        $this->id     = $array['id'];
+        $this->passwd = $array['passwd'];
         $this->groups = $array['groups'];
         $this->status = $array['status'];
-        $this->options  = $array['options'];
+        if(isset($array['options'])){ $this->options  = $array['options']; }
     }
 
 }

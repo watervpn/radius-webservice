@@ -77,24 +77,23 @@ class AccountMapper
      * @return ApiProblem|mixed
      */
     public function delete(AccountEntity $obj){
+        $check = $this->checkMapper->findByUserAttrOp($obj->getId(), 'User-Password', ':=');
         try{
-            $check = $this->checkMapper->findByUserAttrOp($obj->getId(), 'User-Password', ':=');
             $groups = array();
             foreach($obj->getGroups() as $groupName){
                 $groups[] = $this->groupMapper->find( array($obj->getId(), $groupName) );
             }
         }catch(Exception\ObjectNotFoundException $e){
-            throw $e;
-        }catch(\Exception $e){
-            // Log error
-            return;
+            //throw $e;
         }
 
+        // Delete
         try{
             foreach($groups as $group){
                 $this->groupMapper->delete($group);
             }
             $this->checkMapper->delete($check);
+            return true;
         }catch(\Exception $e){
             throw $e;
         }
