@@ -36,7 +36,7 @@ class AccountEntity extends AbstractEntity
     //const ACTIVE = 'Active'; 
     const ACTIVE = 1; 
     //const INACTIVE = 'Inactive'; 
-    const INACTIVE = 2; 
+    const INACTIVE = 0; 
 
 
     public function __construct($id = null, $passwd = null, $groups = array(), $status = null, $options = array())
