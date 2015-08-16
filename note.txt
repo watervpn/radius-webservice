@@ -1,0 +1,99 @@
+ 
+ AccountUpdate - duplication superman in group
+ AccountUpdate - Todo: it empty group - delete group from user group table   *DONE
+
+
+
+// Curl Command
+--------------------------
+// Create
+curl -s -u 'watervpn:landmark5!' -H "Content-Type: application/json" -X POST -d '{"passwd":"afasd","id":"superman","groups":["pro"],"status":"active"}' http://api.dev.alfredkan.com/radius/account
+
+// Update
+curl -s -u 'watervpn:landmark5!' -H "Content-Type: application/json" -X PUT -d '{"passwd":"afasd","groups":["pro"],"status":"active"}' http://api.dev.alfredkan.com/radius/account/superman2
+
+// fetch
+curl -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" http://api.dev.alfredkan.com/radius/account/superman | python -m json.tool
+
+// fetch all
+curl -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" http://api.dev.alfredkan.com/radius/account | python -m json.tool
+
+// delete
+curl -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" -X DELETE http://api.dev.alfredkan.com/radius/account/superman | python -m json.tool
+
+
+// Install or Deploy Setup
+--------------------------
+
+// Clone from git
+// cd to httpdocs
+    clone -b dev git@git.watervpn.com:root/radius-webservice.git
+
+// Download Compposer
+    curl -sS https://getcomposer.org/installer | php
+
+// Install Zend dependency
+// cd path/to/install
+    composer.phar install   (provide github login)
+
+// Remove apigility data/cache
+
+// Change to right permission
+
+// check absolute path in
+    config/autoload/local.php
+    config/autoload/global.php
+    config/application.config.php (config_glob_paths)
+
+// Enable development to access admin UI
+    php public/index.php development enable
+
+// Add DB adapters 
+    config/autoload/local.php
+    Name: Db\Radius_test
+    Drive: PDO_Mysql
+    db: ws_radius
+    utf8
+
+
+// TODO:
+// Code Refactor
+Controller:
+
+Resource:
+Handle restful request, using Model and throw restfull "api problem"
+
+Model:
+Busince Logic, (fetch, fetchAll, create, delete and Extra operation)
+    pass in mapper throw constrctor
+    hard code new entity (Entity never change for model)
+    worker can be include in the Model
+    create(array checkData)
+    update($id, array checkData)
+
+Mapper:
+Handle data mapping between entity and database depends on db adapter
+    pass in db adapter and entity
+
+Entity:
+    Contain entity or object properities only, all extra object operation goes to Model
+    Alow magic __get & __set, override getter and setter if nessary
+
+Worker:
+    Is an Action process that involve mutiple Models and logic in between
+    The name should be action instead of nonu
+    Static getInstance - singlton
+
+Util:
+    S
+
+// Name convation
+remove entity or mapper end of the file name
+
+// TODO:
+Remove entity or mapper end of the file name
+Create mapper
+entity __get & __set in abstract layer
+
+
+
