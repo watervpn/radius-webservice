@@ -33,7 +33,7 @@ return array(
             './vendor',
         ),
         'config_glob_paths' => array(
-            '/var/www/vhosts/dev/api/httpdocs/config/autoload/{,*.}{global,local}.php',
+            'config/autoload/{,*.}{global,local}.php',
         ),
         'config_cache_key' => 'application.config.cache',
         'config_cache_enabled' => true,
