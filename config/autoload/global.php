@@ -9,7 +9,8 @@ return array(
     ),
     'db' => array(
         'adapters' => array(
-            'Db\\Radius_test' => array(),
+            'Db\\Radius_Prod' => array(),
+            'Db\\Radius_Dev' => array(),
         ),
     ),
 );

@@ -49,6 +49,7 @@ curl -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" -X DELETE 
     php public/index.php development enable
 
 // Add DB adapters 
+    copy config/autoload/local.php
     config/autoload/local.php
     Name: Db\Radius_test
     Drive: PDO_Mysql
