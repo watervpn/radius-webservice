@@ -6,7 +6,8 @@ try{
 
     $testMapper = $sm->get('Lib\Radius\CheckMapper'); 
     $obj = $testMapper->findByUser('roy');
-    print_r($obj);
+    $obj = $obj->current();
+    var_dump($obj);
 
     echo "<br/>end<br/>";
 }catch(Exception $e){
