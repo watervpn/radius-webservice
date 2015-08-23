@@ -32,7 +32,7 @@ class Module
                  */
                 // Radius db Abstract
                 'Db\Radius' => function ($sm) {
-                    return $sm->get('Db\Radius_Prod');
+                    return $sm->get('radius_prod');
                 },
 
                 /*
