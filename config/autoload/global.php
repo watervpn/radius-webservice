@@ -9,8 +9,8 @@ return array(
     ),
     'db' => array(
         'adapters' => array(
-            'Db\\Radius_Prod' => array(),
-            'Db\\Radius_Dev' => array(),
+            'radius_prod' => array(),
+            'radius_dev' => array(),
         ),
     ),
 );
