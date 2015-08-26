@@ -6,20 +6,29 @@
 
 // Curl Command
 --------------------------
+
+Curl Options:
+    -k    bypass SSL verfiy/ insecure SSL
+    -s    Silent 
+    -u    User:Password
+    -H    Header
+    -X    Http method
+    -d    Post data
+
 // Create
-curl -s -u 'watervpn:landmark5!' -H "Content-Type: application/json" -X POST -d '{"passwd":"afasd","id":"superman","groups":["pro"],"status":"active"}' http://api.dev.alfredkan.com/radius/account
+curl -k -s -u 'watervpn:landmark5!' -H "Content-Type: application/json" -X POST -d '{"passwd":"afasd","id":"superman","groups":["pro"],"status":"1"}' http://api.dev.alfredkan.com/radius/account
 
 // Update
-curl -s -u 'watervpn:landmark5!' -H "Content-Type: application/json" -X PUT -d '{"passwd":"afasd","groups":["pro"],"status":"active"}' http://api.dev.alfredkan.com/radius/account/superman2
+curl -k -s -u 'watervpn:landmark5!' -H "Content-Type: application/json" -X PUT -d '{"passwd":"afasd","groups":["pro"],"status":"1"}' http://api.dev.alfredkan.com/radius/account/superman2
 
 // fetch
-curl -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" http://api.dev.alfredkan.com/radius/account/superman | python -m json.tool
+curl -k -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" http://api.dev.alfredkan.com/radius/account/superman | python -m json.tool
 
 // fetch all
-curl -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" http://api.dev.alfredkan.com/radius/account | python -m json.tool
+curl -k -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" http://api.dev.alfredkan.com/radius/account | python -m json.tool
 
 // delete
-curl -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" -X DELETE http://api.dev.alfredkan.com/radius/account/superman | python -m json.tool
+curl -k -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" -X DELETE http://api.dev.alfredkan.com/radius/account/superman | python -m json.tool
 
 
 // Install or Deploy Setup
