@@ -34,6 +34,7 @@ return array(
                 1 => 'PATCH',
                 2 => 'PUT',
                 3 => 'DELETE',
+                4 => 'POST',
             ),
             'collection_http_methods' => array(
                 0 => 'GET',
@@ -135,7 +136,7 @@ $option = array(
                 ),
                 'entity' => array(
                     'GET' => true,
-                    'POST' => false,
+                    'POST' => true,
                     'PUT' => true,
                     'PATCH' => true,
                     'DELETE' => true,
