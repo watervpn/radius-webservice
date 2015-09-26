@@ -68,6 +68,8 @@ curl -k -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" -X DELE
 
 // TODO:
 // Code Refactor
+// example 
+/var/www/vhosts/dev/api/httpdocs/vendor/zfcampus/zf-apigility-admin/src/Model/ContentNegotiationResource.php
 Controller:
 
 Resource:
@@ -80,6 +82,15 @@ Busince Logic, (fetch, fetchAll, create, delete and Extra operation)
     worker can be include in the Model
     create(array checkData)
     update($id, array checkData)
+    // use static cache form entity
+    example
+            $id = '2';
+            $check = checkModel->fetch( $id );
+            $check = checkModel->create( $id, $name, $pass );
+            $check = checkModel->update($id, $name, $pass);
+            $check = checkModel->delete($id)
+             checkModel->enableUser( $id )
+    Extends resource interface (fetch,create, update, delete)
 
 Mapper:
 Handle data mapping between entity and database depends on db adapter
