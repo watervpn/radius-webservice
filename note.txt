@@ -116,5 +116,14 @@ Remove entity or mapper end of the file name
 Create mapper
 entity __get & __set in abstract layer
 
+//Bug
+httpdocs/vendor/zfcampus/zf-mvc-auth/src/Authentication/HttpAdapter.php
+line 121
+authentication()
 
+ //Authentication
+ refer: https://apigility.org/documentation/modules/zf-mvc-auth
+ deny_by_default toggles the default behavior for the 
+ line: 215
+ /var/www/vhosts/dev/api/httpdocs/vendor/zfcampus/zf-mvc-auth/config/module.config.php
 
