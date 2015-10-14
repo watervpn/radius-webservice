@@ -1,10 +1,17 @@
 <?php
-namespace Lib\Model;
+namespace Lib\Base;
 
 //use Zend\Stdlib\Hydrator;
 
 Abstract class AbstractRespondent
 {
+    /**
+     * Web service error code
+     */
+    const ENTITY_NOT_FOUND           = '404';
+    const ENTITY_ERROR               = '420';
+    const ENTITY_ALREADY_EXIST       = '421';
+    const ENTITY_CREATED             = '201';
 
     public function __construct(){
     }

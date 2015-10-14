@@ -2,11 +2,10 @@
 namespace Lib\Radius\Mapper;
 
 use Zend\Db\TableGateway\TableGateway;
-use Lib\Model\AbstractMapper;
-use Lib\Model\AbstractEntity;
-use Lib\Model\Exception as Exception;
+use Lib\Base\AbstractMapper;
+use Lib\Base\Exception as Exception;
 
-class UserGroupMapper extends AbstractMapper
+class UserGroup extends AbstractMapper
 {
     /**
      * Overwrite MapperAbstract primaryKey 
@@ -58,7 +57,7 @@ class UserGroupMapper extends AbstractMapper
             $groups = null;
         }
 
-        $createObjs = $objs;    // UserGroupEntity array objs
+        $createObjs = $objs;    // UserGroup array objs
         $deleteObjs = array();  // Usergroupentity array objs
         $updateObjs = array();  // Usergroupentity array objs
 

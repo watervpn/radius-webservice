@@ -1,7 +1,7 @@
 <?php
 namespace Lib\Radius\Entity;
 
-use Lib\Model\AbstractEntity;
+use Lib\Base\AbstractEntity;
 
 class AccountEntity extends AbstractEntity
 {

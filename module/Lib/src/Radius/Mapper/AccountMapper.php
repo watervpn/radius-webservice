@@ -2,14 +2,13 @@
 
 namespace Lib\Radius\Mapper;
 
-use Zend\Db\Sql\Select;
 use Zend\Db\Adapter\AdapterInterface;
-use Zend\Paginator\Adapter\DbSelect;
-use Lib\Model\AbstractEntity;
-use Lib\Radius\Entity\CheckEntity;
-use Lib\Radius\Entity\UserGroupEntity;
-use Lib\Radius\Entity\AccountEntity;
-use Lib\Model\Exception as Exception;
+//use Zend\Paginator\Adapter\DbSelect;
+//use Zend\Db\Sql\Select;
+use Lib\Radius\Model\Check as CheckModel;
+use Lib\Radius\Model\UserGroup as UserGroupModel;
+use Lib\Radius\Entity\AccountEntity as AccountEntity;
+use Lib\Base\Exception as Exception;
 
 class AccountMapper
 {
@@ -28,10 +27,6 @@ class AccountMapper
         $this->entity = $entity;
     }
 
-    public function getEntity(){
-        return $this->entity;
-
-    }
     /**
      * Save account
      *
@@ -47,7 +42,7 @@ class AccountMapper
             if(isset($data['passwd'])){ $check->setValue($data['passwd']); }
         }catch(Exception\ObjectNotFoundException $e){
             // Insert
-            $check = new CheckEntity(null, $data['id'], 'User-Password', ':=', $data['passwd']);
+            $check = new CheckModel(null, $data['id'], 'User-Password', ':=', $data['passwd']);
         }
         // RadUserGroup
         $groups = array();
@@ -61,7 +56,7 @@ class AccountMapper
                 }catch(Exception\ObjectNotFoundException $e){
                     // Insert
                     if(!empty($group)){
-                        $groups[] = new UserGroupEntity($data['id'], $group, '1');
+                        $groups[] = new UserGroupModel($data['id'], $group, '1');
                     }
                 }
             }
@@ -177,16 +172,6 @@ class AccountMapper
         //$paginatorAdapter = new DbSelect($select, $this->adapter);
         //$collection = new AccountCollection($paginatorAdapter);
         //return $collection;
-    }
-
-    /**
-     * @param array $item 
-     * @return Entity
-     */
-    public function createEntity()
-    {
-        echo "=====test==========";
-        //return $this->hydrator->hydrate($item, $this->entityPrototype);
     }
 
 }

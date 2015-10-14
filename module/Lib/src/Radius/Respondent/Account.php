@@ -2,11 +2,14 @@
 namespace Lib\Radius\Respondent;
 
 use ZF\ApiProblem\ApiProblem;
-use Lib\Model\AbstractRespondent;
-use Lib\Model\AbstractMapper;
-use Lib\Model\Exception as Exception;
+use Lib\Base\AbstractRespondent;
+use Lib\Base\Exception as Exception;
 
-class AccountRespondent extends AbstractRespondent{
+/**
+ * Respondent fouse on handle return http status
+ */
+class Account extends AbstractRespondent{
+
     private $entity;
     private $mapper;
 
@@ -14,12 +17,7 @@ class AccountRespondent extends AbstractRespondent{
     {
         /* @var $mapper Lib\Radius\Mapper\AccountMapper */
         $this->mapper = $mapper;
-        // TODO: move to abstract
-        if(method_exists($mapper, 'getEntity')){
-            $this->entity = $mapper->getEntity();
-        }else{
-            $this->entity = $mapper->getTableGateway()->getResultSetPrototype()->getArrayObjectPrototype();
-        }
+        $this->entity = new \Lib\Radius\Entity\AccountEntity();
     }
 
     /**
@@ -30,12 +28,13 @@ class AccountRespondent extends AbstractRespondent{
      */
     public function create($data){
         try{
-            $account = $this->mapper->find($data->id);
-            return new ApiProblem(405, "Account: {$data->id} already exist!");
+            $account = $this->mapper->find( $data->id );
+            return new ApiProblem( self::ENTITY_ALREADY_EXIST, "Account: {$data->id} already exist!");
         }catch(Exception\ObjectNotFoundException $e){
             //$account = new AccountEntity($data->account_id, $data->passwd, $data->groups, $data->status);
             $this->entity->exchangeArray(get_object_vars($data));
             $this->mapper->save($this->entity);
+            return $this->entity;
         }
     }
 
@@ -53,8 +52,9 @@ class AccountRespondent extends AbstractRespondent{
             if(isset($data->groups)){ $account->setGroups($data->groups); }
             if(isset($data->status)){ $account->setStatus($data->status); }
             $this->mapper->save($account);
+            return $account;
         }catch(Exception\ObjectNotFoundException $e){
-            //return new ApiProblem(405, 'The POST method has not been defined');
+            return new ApiProblem( self::ENTITY_NOT_FOUND, "Account Not Found {$id} error: [{$e->getMessage()}]");
         }
     }
 
@@ -69,7 +69,7 @@ class AccountRespondent extends AbstractRespondent{
             $account = $this->mapper->find($id);
             return $this->mapper->delete($account);
         }catch(Exception\ObjectNotFoundException $e){
-            //return new ApiProblem(404, "Account Not Found {$id} error: [{$e->getMessage()}]");
+            return new ApiProblem( self::ENTITY_NOT_FOUND, "Can not delete Account Not Found {$id} error: [{$e->getMessage()}]");
         }
     }
 
@@ -81,9 +81,10 @@ class AccountRespondent extends AbstractRespondent{
      */
     public function fetch($id){
         try{
+            //return new ApiProblem( 404, "Account Not Found {$id} ]");
             return $this->mapper->find($id);
         }catch(Exception\ObjectNotFoundException $e){
-            return new ApiProblem(404, "Account Not Found {$id} error: [{$e->getMessage()}]");
+            return new ApiProblem( self::ENTITY_NOT_FOUND, "Account Not Found {$id} error: [{$e->getMessage()}]");
         }
     }
 
@@ -97,7 +98,7 @@ class AccountRespondent extends AbstractRespondent{
         try{
             return $this->mapper->findAll();
         }catch(\Exception $e){
-            return new ApiProblem(404, "Account Not Found {$id} error: [{$e->getMessage()}]");
+            return new ApiProblem( self::ENTITY_NOT_FOUND, "Account Not Found {$id} error: [{$e->getMessage()}]");
         }
     }
 }

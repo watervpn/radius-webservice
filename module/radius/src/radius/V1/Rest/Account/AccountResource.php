@@ -4,7 +4,7 @@ namespace radius\V1\Rest\Account;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 use Lib\Radius\Entity\AccountEntity;
-use Lib\Model\Exception as Exception;
+use Lib\Base\Exception as Exception;
 
 class AccountResource extends AbstractResourceListener
 {
@@ -12,7 +12,7 @@ class AccountResource extends AbstractResourceListener
 
     public function __construct($respondent)
     {
-        /* @var $respondent Lib\Radius\Respondent\AccountRespondent */
+        /* @var $respondent Lib\Radius\Respondent\Account*/
         $this->respondent = $respondent;
     }
     /**
@@ -25,7 +25,7 @@ class AccountResource extends AbstractResourceListener
     public function create($data)
     {
         //return new ApiProblem(405, 'The POST method has not been defined');
-        $this->respondent->create($data);
+        return $this->respondent->create($data);
     }
 
     /**

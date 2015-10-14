@@ -2,10 +2,10 @@
 namespace Lib\Radius\Mapper;
 
 use Zend\Db\TableGateway\TableGateway;
-use Lib\Model\AbstractMapper;
-use Lib\Model\Exception as Exception;
+use Lib\Base\AbstractMapper;
+use Lib\Base\Exception as Exception;
 
-class GroupCheckMapper extends AbstractMapper
+class GroupCheck extends AbstractMapper
 {
     /**
      * Overwrite MapperAbstract primaryKey 
@@ -44,7 +44,7 @@ class GroupCheckMapper extends AbstractMapper
     /**
      * Find row by username and attribute
      *
-     * @return Lib\Radius\Entity\ReplyEntity
+     * @return Lib\Radius\Model\GroupCheck
      */
     public function findByGroupAttrOp($groupname, $attribute, $op)
     {

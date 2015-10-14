@@ -1,0 +1,87 @@
+<?php
+namespace Lib\Radius\Model;
+
+use Lib\Radius\Entity\AccountEntity as AccountEntity;
+use Lib\Base\Exception as Exception;
+
+//class Account extends AbstractRespondent{
+class Account extends AccountEntity{
+
+    private $mapper;
+
+    public function __construct( $mapper )
+    {
+        /* @var $mapper Lib\Radius\Mapper\AccountMapper */
+        $this->mapper = $mapper;
+    }
+
+    /**
+     * Create 
+     *
+     * @return Lib\Radius\Entity\AccountEntity
+     */
+    public function create( $id, $passwd, $groups = [], $staus = 1 ){
+        try{
+            // check if user exist
+            $account = $this->mapper->find( $id );
+            throw new Exception\ObjectAlreadyExistsException( __CLASS__." Object {$id} already exist!" );
+        }catch( Exception\ObjectNotFoundException $e ){
+            // create only user not exsit on system
+            $entity = new AccountEntity( $id, $passwd, $groups, $status );
+            $this->mapper->save( $entity );
+            return $entity;
+        }
+    }
+
+    /**
+     * Update
+     *
+     * @param  string $id
+     * @param  array $data
+     * @return Lib\Radius\Entity\AccountEntity
+     */
+    public function update( $id, $data = [] ){
+        $account = $this->mapper->find( $id );
+        if( isset( $data[passwd] )){ $account->setPasswd($data[passwd] ); }
+        if( isset( $data[groups] )){ $account->setGroups($data[groups] ); }
+        if( isset( $data[status] )){ $account->setStatus($data[status] ); }
+        $this->mapper->save( $account );
+        return $account;
+    }
+
+    /**
+     * Delete a collection, or members of a collection
+     *
+     * @param  string $id
+     * @return boolean
+     */
+    public function delete( $id ){
+        $account = $this->mapper->find( $id );
+        $this->mapper->delete( $account );
+        return true;
+    }
+
+    /**
+     * Fetch 
+     *
+     * @param  string $id
+     * @return Lib\Radius\Entity\AccountEntity
+     */
+    public function fetch( $id ){
+        return $this->mapper->find( $id );
+    }
+
+    /**
+     * Fetch all or a subset of resources
+     *
+     * @param  array $params
+     * @return Lib\Radius\Entity\AccountEntity
+     */
+    public function fetchAll(){
+        return $this->mapper->findAll();
+    }
+
+    public function save( $account ){
+        return $this->mapper->save( $account );
+    }
+}

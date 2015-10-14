@@ -1,9 +1,9 @@
 <?php
 namespace Lib\Radius\Entity;
 
-use Lib\Model\AbstractEntity;
+use Lib\Base\AbstractEntity;
 
-class GroupCheckEntity extends AbstractEntity
+class GroupReply extends AbstractEntity
 {
     public $id;
     public $groupname;
@@ -64,12 +64,6 @@ class GroupCheckEntity extends AbstractEntity
         $this->value = $value;
     }
 
-    /**
-     * Implement Abstract exchangearray
-     * Convert array to object
-     * 
-     * @param array
-     */
     public function exchangeArray(array $data)
     {
         $this->id            = (!empty($data['id'])) ? $data['id'] : null;
@@ -79,12 +73,6 @@ class GroupCheckEntity extends AbstractEntity
         $this->value         = (!empty($data['value'])) ? $data['value'] : null;
     }
 
-    /**
-     * Implement Abstract getarraycopy
-     * Convert object to array
-     *
-     * @return array
-     */
     public function getArrayCopy()
     {
         return array(

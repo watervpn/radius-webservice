@@ -1,20 +1,20 @@
 <?php
 namespace Lib\Radius\Entity;
 
-use Lib\Model\AbstractEntity;
+use Lib\Base\AbstractEntity;
 
-class CheckEntity extends AbstractEntity
+class GroupCheck extends AbstractEntity
 {
     public $id;
-    public $username;
+    public $groupname;
     public $attribute;
     public $op;
     public $value;
 
-    public function __construct($id = null, $username = null, $attribute = null, $op = null, $value = null)
+    public function __construct($id = null, $groupname = null, $attribute = null, $op = null, $value = null)
     {
         $this->id = $id;
-        $this->username = $username;
+        $this->groupname = $groupname;
         $this->attribute = $attribute;
         $this->op = $op;
         $this->value = $value;
@@ -25,9 +25,9 @@ class CheckEntity extends AbstractEntity
     {
         return $this->id;
     }
-    public function getUsername()
+    public function getGroupname()
     {
-        return $this->username;
+        return $this->groupname;
     }
     public function getAttribute()
     {
@@ -47,9 +47,9 @@ class CheckEntity extends AbstractEntity
     {
         $this->id = $id;
     }
-    public function setUsername($username)
+    public function setGroupname($groupname)
     {
-        $this->username = $username;
+        $this->groupname = $groupname;
     }
     public function setAttribute($attribute)
     {
@@ -66,11 +66,14 @@ class CheckEntity extends AbstractEntity
 
     /**
      * Implement Abstract exchangearray
+     * Convert array to object
+     * 
+     * @param array
      */
     public function exchangeArray(array $data)
     {
         $this->id            = (!empty($data['id'])) ? $data['id'] : null;
-        $this->username      = (!empty($data['username'])) ? $data['username'] : null;
+        $this->groupname     = (!empty($data['groupname'])) ? $data['groupname'] : null;
         $this->attribute     = (!empty($data['attribute'])) ? $data['attribute'] : null;
         $this->op            = (!empty($data['op'])) ? $data['op'] : null;
         $this->value         = (!empty($data['value'])) ? $data['value'] : null;
@@ -78,12 +81,15 @@ class CheckEntity extends AbstractEntity
 
     /**
      * Implement Abstract getarraycopy
+     * Convert object to array
+     *
+     * @return array
      */
     public function getArrayCopy()
     {
         return array(
             'id'         => $this->id,
-            'username'   => $this->username,
+            'groupname'  => $this->groupname,
             'attribute'  => $this->attribute,
             'op'         => $this->op,
             'value'      => $this->value,

@@ -1,9 +1,9 @@
 <?php
 namespace Lib\Radius\Entity;
 
-use Lib\Model\AbstractEntity;
+use Lib\Base\AbstractEntity;
 
-class UserGroupEntity extends AbstractEntity
+class UserGroup extends AbstractEntity
 {
     public $username;
     public $groupname;

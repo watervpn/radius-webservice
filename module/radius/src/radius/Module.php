@@ -28,9 +28,9 @@ class Module implements ApigilityProviderInterface
                 'Radius\Account\AccountMapper' =>  function ($sm) {
                     //$adapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $adapter = $sm->get('Db\Radius');
-                    $checkMapper = $sm->get('Lib\Radius\CheckMapper');
-                    $groupMapper = $sm->get('\Lib\Radius\UserGroupMapper');
-                    $groupCheckMapper = $sm->get('\Lib\Radius\GroupCheckMapper');
+                    $checkMapper = $sm->get('Lib\Radius\Mapper\Check');
+                    $groupMapper = $sm->get('\Lib\Radius\Mapper\UserGroup');
+                    $groupCheckMapper = $sm->get('\Lib\Radius\Mapper\GroupCheck');
                     return new \radius\V1\Rest\Account\AccountMapper($adapter, $checkMapper, $groupMapper, $groupCheckMapper);
                 },
             ),

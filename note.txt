@@ -91,6 +91,16 @@ Busince Logic, (fetch, fetchAll, create, delete and Extra operation)
             $check = checkModel->delete($id)
              checkModel->enableUser( $id )
     Extends resource interface (fetch,create, update, delete)
+    Todo:
+        Create Model for all entity & mappers
+        //Remove AccountMapper.php and have Account Model handel
+        AccountMapper should only user other mapper and not apps
+        Model should use other sub model
+    new todo:
+        add respondent interface
+        Model extend Entity
+        respondent for resource
+
 
 Mapper:
 Handle data mapping between entity and database depends on db adapter

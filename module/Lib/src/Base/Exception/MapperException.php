@@ -1,6 +1,6 @@
 <?php
 
-namespace Lib\Model\Exception;
+namespace Lib\Base\Exception;
 
 class MapperException extends \Exception
 {

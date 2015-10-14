@@ -1,20 +1,20 @@
 <?php
 namespace Lib\Radius\Entity;
 
-use Lib\Model\AbstractEntity;
+use Lib\Base\AbstractEntity;
 
-class GroupReplyEntity extends AbstractEntity
+class Check extends AbstractEntity
 {
     public $id;
-    public $groupname;
+    public $username;
     public $attribute;
     public $op;
     public $value;
 
-    public function __construct($id = null, $groupname = null, $attribute = null, $op = null, $value = null)
+    public function __construct($id = null, $username = null, $attribute = null, $op = null, $value = null)
     {
         $this->id = $id;
-        $this->groupname = $groupname;
+        $this->username = $username;
         $this->attribute = $attribute;
         $this->op = $op;
         $this->value = $value;
@@ -25,9 +25,9 @@ class GroupReplyEntity extends AbstractEntity
     {
         return $this->id;
     }
-    public function getGroupname()
+    public function getUsername()
     {
-        return $this->groupname;
+        return $this->username;
     }
     public function getAttribute()
     {
@@ -47,9 +47,9 @@ class GroupReplyEntity extends AbstractEntity
     {
         $this->id = $id;
     }
-    public function setGroupname($groupname)
+    public function setUsername($username)
     {
-        $this->groupname = $groupname;
+        $this->username = $username;
     }
     public function setAttribute($attribute)
     {
@@ -64,20 +64,26 @@ class GroupReplyEntity extends AbstractEntity
         $this->value = $value;
     }
 
+    /**
+     * Implement Abstract exchangearray
+     */
     public function exchangeArray(array $data)
     {
         $this->id            = (!empty($data['id'])) ? $data['id'] : null;
-        $this->groupname     = (!empty($data['groupname'])) ? $data['groupname'] : null;
+        $this->username      = (!empty($data['username'])) ? $data['username'] : null;
         $this->attribute     = (!empty($data['attribute'])) ? $data['attribute'] : null;
         $this->op            = (!empty($data['op'])) ? $data['op'] : null;
         $this->value         = (!empty($data['value'])) ? $data['value'] : null;
     }
 
+    /**
+     * Implement Abstract getarraycopy
+     */
     public function getArrayCopy()
     {
         return array(
             'id'         => $this->id,
-            'groupname'  => $this->groupname,
+            'username'   => $this->username,
             'attribute'  => $this->attribute,
             'op'         => $this->op,
             'value'      => $this->value,

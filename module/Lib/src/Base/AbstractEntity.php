@@ -1,5 +1,5 @@
 <?php
-namespace Lib\Model;
+namespace Lib\Base;
 
 //use Zend\Stdlib\Hydrator;
 

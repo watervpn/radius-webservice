@@ -1,9 +1,9 @@
 <?php
 namespace Lib\Radius\Entity;
 
-use Lib\Model\AbstractEntity;
+use Lib\Base\AbstractEntity;
 
-class ReplyEntity extends AbstractEntity
+class Reply extends AbstractEntity
 {
     public $id;
     public $username;

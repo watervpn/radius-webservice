@@ -1,9 +1,9 @@
 <?php
-namespace Lib\Model;
+namespace Lib\Base;
 
 //use Zend\Stdlib\Hydrator;
 use Zend\Db\TableGateway\TableGateway;
-use Lib\Model\Exception as Exception;
+use Lib\Base\Exception as Exception;
 use Zend\Db\Sql\Select;
 
 Abstract class AbstractMapper
