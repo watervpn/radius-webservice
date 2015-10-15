@@ -1,7 +1,7 @@
 <?php
 namespace Lib\Radius\Model;
 
-use Lib\Radius\Entity\AccountEntity as AccountEntity;
+use Lib\Radius\Entity\Account as AccountEntity;
 /**
  * Business rules for the check 
  */

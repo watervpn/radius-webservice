@@ -3,7 +3,7 @@ namespace radius\V1\Rest\Account;
 
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
-use Lib\Radius\Entity\AccountEntity;
+use Lib\Radius\Entity\Account;
 use Lib\Base\Exception as Exception;
 
 class AccountResource extends AbstractResourceListener

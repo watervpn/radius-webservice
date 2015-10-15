@@ -98,21 +98,21 @@ class Module
                  * Mapper - composite of sub mappers
                  */
                 // AccountMapper 
-                'Lib\Radius\AccountMapper' =>  function ($sm) {
+                'Lib\Radius\Mapper\Account' =>  function ($sm) {
                     //$adapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $adapter = $sm->get('Db\Radius');
                     $entity = new Radius\Model\Account();
                     $checkMapper = $sm->get('Lib\Radius\Mapper\Check');
                     $groupMapper = $sm->get('\Lib\Radius\Mapper\UserGroup');
                     $groupCheckMapper = $sm->get('\Lib\Radius\Mapper\GroupCheck');
-                    return new Radius\Mapper\AccountMapper($adapter, $entity, $checkMapper, $groupMapper, $groupCheckMapper);
+                    return new Radius\Mapper\Account($adapter, $entity, $checkMapper, $groupMapper, $groupCheckMapper);
                 },
 
                 /*
                  * Web Service Respondent 
                  */
                 'Lib\Radius\Respondent\Account' =>  function ($sm) {
-                    $accountMapper = $sm->get('\Lib\Radius\AccountMapper');
+                    $accountMapper = $sm->get('\Lib\Radius\Mapper\Account');
                     return new Radius\Respondent\Account($accountMapper);
                 },
             ),

@@ -15,9 +15,9 @@ class Account extends AbstractRespondent{
 
     public function __construct($mapper)
     {
-        /* @var $mapper Lib\Radius\Mapper\AccountMapper */
+        /* @var $mapper Lib\Radius\Mapper\Account */
         $this->mapper = $mapper;
-        $this->entity = new \Lib\Radius\Entity\AccountEntity();
+        $this->entity = new \Lib\Radius\Model\Account();
     }
 
     /**
@@ -31,7 +31,7 @@ class Account extends AbstractRespondent{
             $account = $this->mapper->find( $data->id );
             return new ApiProblem( self::ENTITY_ALREADY_EXIST, "Account: {$data->id} already exist!");
         }catch(Exception\ObjectNotFoundException $e){
-            //$account = new AccountEntity($data->account_id, $data->passwd, $data->groups, $data->status);
+            //$account = new Account($data->account_id, $data->passwd, $data->groups, $data->status);
             $this->entity->exchangeArray(get_object_vars($data));
             $this->mapper->save($this->entity);
             return $this->entity;

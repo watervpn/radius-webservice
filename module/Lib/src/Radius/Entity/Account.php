@@ -3,7 +3,7 @@ namespace Lib\Radius\Entity;
 
 use Lib\Base\AbstractEntity;
 
-class AccountEntity extends AbstractEntity
+class Account extends AbstractEntity
 {
     /**
      * @var string
