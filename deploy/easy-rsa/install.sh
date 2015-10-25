@@ -68,7 +68,6 @@ function config_easyras(){
 
     # Prepare Generate Easy RAS Env & default Easy RAS values
     cd $easyRsaPath 
-    source ./vars
     yes | source ./clean-all
     source ./vars
 
