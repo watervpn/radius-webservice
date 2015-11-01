@@ -3,8 +3,10 @@
 use Zend\ServiceManager\ServiceManager;
 
 // custom to disalbe opcahce for admin interface
-opcache_reset();
-ini_set('opcache.enable', 0);
+// remove the following line to prevent affect webservice
+/*opcache_reset();
+ini_set('opcache.enable', 0);*/
+
 /**
  * @license   http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @copyright Copyright (c) 2014 Zend Technologies USA Inc. (http://www.zend.com)
