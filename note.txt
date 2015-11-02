@@ -137,3 +137,93 @@ authentication()
  line: 215
  /var/www/vhosts/dev/api/httpdocs/vendor/zfcampus/zf-mvc-auth/config/module.config.php
 
+// Ras
+---------------------------
+
+Gen ras (account)
+
+ras->get(account);
+database 
+id, account, ras_key, modifyTime
+
+Gen openvpn 
+openvpn->($server, $account, $downloadable=false, $reset)
+        check if account exist
+        //filename  server-account-serial.opvn
+return filetype, size, body, serial
+  look for tmp for file first and call ws  & expire after month
+  filemtime set day file cache time in config in wvpnClient
+  Util for downloadable
+database
+id, filename, fileContent, 
+
+// opvn service
+$openvpn->getRas( $account );
+
+$openvpn->setConnectionFileParams( $account, $key, $value );
+$openvpn->getConnectionFile( $server, $account, downloadable=false );
+
+$openvpn->getServers();
+$openvpn->getServer( $serverName );
+
+// can call be cron job or user want to refesh
+// this fetchserverinfo job is mutip process
+$openvpn->fetchServerInfo();
+
+// pcnti-fork
+// __CLASS__, __FUCTION__
+exec( forkScript, classname, method );
+database
+id, message, status, exception
+
+// Cache
+//https://apigility.org/documentation/modules/zf-http-cache
+
+// Entity
+// create db schema
+database webservice
+// vpn server list
+vpn_server (index: name, location, status)
+    // name: us1, us2, us3
+    // location us
+    id, server_name, ip, location, status, capisabit, info
+opvn_client_parms
+    account, server-name, parm, value, modifyTime
+    account name :defaul_confg, server-name: ca1,  parm: url, value: ca1.watervpn.com
+    account name :defaul_confg, parm: url, value: ca1.watervpn.com
+    ex: remote-url = ca1.watervpn.com
+// when ws call this echo fileContent
+opvn_client_config   // connection file
+    id, account, server_name, filename, fileContent, modifyTime
+ras_client_key
+    id, account, ras_crt, ras_key, modifyTime
+
+
+// openvpn client cert gen
+Require easyRsa
+1) sudo yum -y install easy-rsa
+2) mkdir -p /etc/openvpn/easy-rsa/keys
+3) cp -rf /usr/share/easy-rsa/2.0/* /etc/openvpn/easy-rsa
+4) copy ca keys
+5) edit /etc/openvpn/easy-rsa/var point the ca path
+// to generate
+source ./vars
+./build-key --batch clientName
+check keys dir for generate key
+check last output "Data Base Updated"
+
+
+// Server Info
+remote ssh  /etc/openvpn/openvpn-status.log
+test speed
+bandwidth- vnstat -l -i eth0
+http://www.codejungle.org/site/Realtime+bandwidth+meter+with+php+and+jquery.html
+compare 1 second different
+/sys/class/net/$interface_name/statistics/rx_bytes and tx_bytes
+
+
+// radius account short hast
+http://www.sitepoint.com/building-your-own-url-shortener/
+http://hashids.org/php/
+https://github.com/ivanakimov/hashids.php
+

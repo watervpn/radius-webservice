@@ -1,8 +1,11 @@
 #!/bin/bash
 #
+# Run as apache user
+# Example: su -s /bin/sh apache -c "./install"
+# 1) Make sure Openvpn dir have permission for apache to create dir
+# 2) su -s /bin/sh apache -c "./install"
+
 # Initial Setup
-# Run under web root
-# 
 # arg0 execute command
 # arg1 first paremter
 DIRNAME=$(dirname `readlink -f -- $0`)
@@ -75,6 +78,7 @@ function config_easyras(){
     # We don't need to copy ca.key private we only need ca.crt
     yes | cp $DIRNAME/keys/ca.crt $easyRsaPath/keys/
     yes | cp $DIRNAME/keys/ca.key $easyRsaPath/keys/
+    source ./vars
     echo "Done! Copy ca keys to [$easyRsaPath/keys/]" 
 }
 
