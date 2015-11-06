@@ -64,7 +64,6 @@ class EasyRsa
     public static function delete($filename)
     {
         // Remove key files
-        //$command = "rm -rf ".self::getPath()."/keys/$filename.key ".self::getPath()."/keys/$filename.crt ".self::getPath()."/keys/$filename.csr 2>&1";
         $command = sprintf('rm -rf %s/keys/%s.key %s/keys/%s.crt %s/keys/%s.csr 2>&1', self::getPath(), $filename, self::getPath(), $filename, self::getPath(), $filename);
         exec($command ,$op, $return);
         if( $return !== 0 ){
@@ -90,10 +89,10 @@ class EasyRsa
     public static function isKeyExist($filename)
     {
         @$keys = self::getKeys($filename);
-        if(in_array(false, $keys)){
-            return false;
+        if(in_array(true, $keys)){
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

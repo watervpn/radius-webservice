@@ -12,7 +12,6 @@ class ClientKey extends ClientKeyEntity
     // business level properties
     // business level methods 
 
-    //buildKey($account) using util::EasyRsa::build() and save it 
     private $mapper;
     public function setMapper($mapper)
     {
@@ -30,7 +29,7 @@ class ClientKey extends ClientKeyEntity
     {
         try{
             // load from db if key already exist on db
-            $clientKey = $this->mapper->findByAccount($account);
+            $clientKey = $this->mapper->find($account);
             $this->exchangeArray( $clientKey->getArrayCopy());
         }catch(Exception\ObjectNotFoundException $e){
             if(\Lib\Openvpn\Util\EasyRsa::isKeyExist($account)){
@@ -58,7 +57,7 @@ class ClientKey extends ClientKeyEntity
 
     private function exchangeArrayKeys($account, $keys)
     {
-        $this->account = $account;
+        $this->accountId = $account;
         $this->crt = $keys['crt'];
         $this->key = $keys['key'];
         $this->csr = $keys['csr'];

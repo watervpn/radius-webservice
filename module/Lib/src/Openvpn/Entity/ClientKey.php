@@ -5,17 +5,15 @@ use Lib\Base\AbstractEntity;
 
 class ClientKey extends AbstractEntity
 {
-    public $id;
-    public $account;
+    public $accountId;
     public $crt;
     public $key;
     public $csr;
     public $modified;
 
-    public function __construct($id = null, $account = null, $crt = null, $key = null, $csr = null, $modified = null)
+    public function __construct($accountId = null, $crt = null, $key = null, $csr = null, $modified = null)
     {
-        $this->id       = $id;
-        $this->account  = $account;
+        $this->accountId  = $accountId;
         $this->crt      = $crt;
         $this->key      = $key;
         $this->csr      = $csr;
@@ -23,13 +21,9 @@ class ClientKey extends AbstractEntity
     }
 
     // Getter
-    public function getId()
+    public function getAccountId()
     {
-        return $this->id;
-    }
-    public function getAccount()
-    {
-        return $this->account;
+        return $this->accountId;
     }
     public function getCrt()
     {
@@ -49,13 +43,9 @@ class ClientKey extends AbstractEntity
     }
 
     // Setter
-    public function setId($id)
+    public function setAccountId($accountId)
     {
-        $this->id = $id;
-    }
-    public function setAccount($account)
-    {
-        $this->account = $account;
+        $this->accountId = $accountId;
     }
     public function setCrt($crt)
     {
@@ -79,8 +69,7 @@ class ClientKey extends AbstractEntity
      */
     public function exchangeArray(array $data)
     {
-        $this->id           = (!empty($data['id'])) ? $data['id'] : null;
-        $this->account      = (!empty($data['account'])) ? $data['account'] : null;
+        $this->accountId    = (!empty($data['account_id'])) ? $data['account_id'] : null;
         $this->crt          = (!empty($data['crt'])) ? $data['crt'] : null;
         $this->key          = (!empty($data['key'])) ? $data['key'] : null;
         $this->csr          = (!empty($data['csr'])) ? $data['csr'] : null;
@@ -93,8 +82,7 @@ class ClientKey extends AbstractEntity
     public function getArrayCopy()
     {
         return array(
-            'id'         => $this->id,
-            'account'    => $this->account,
+            'account_id' => $this->accountId,
             'crt'        => $this->crt,
             'key'        => $this->key,
             'csr'        => $this->csr,

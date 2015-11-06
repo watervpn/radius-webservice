@@ -1,55 +1,47 @@
 <?php
-namespace Lib\Openvpn\Model;
+namespace Lib\Openvpn\Worker;
 
-use Lib\Openvpn\Entity\ClientConfig as ClientConfigEntity;
-/**
- * Business rules for the ClientConfig 
- */
-class ClientConfig extends ClientConfigEntity
+use Lib\Base\Exception as Exception;
+
+class BuildClientConfig 
 {
-    // business level constants
-    // business level properties
-    // business level methods 
+    protected $clientConfigMapper;
+    protected $clientParamMapper;
+    protected $clientKeyMapper;
+    protected $clientKey;
 
-    const CONFIG_TEMPLATE_FILE = '/var/www/vhosts/dev/api-test/httpdocs/ca1-vpn-client-login.ovpn';
-    private $mapper;
-    private $buildConfigWorker;
-
-    public function __construct($mapper = null, $buildConfigWorker = null)
+    public function __construct($clientConfigMapper, $clientKeyMapper, $clientKey, $clientParamMapper = null)
     {
-        $this->mapper = $mapper;
-        $this->buildConfigWorker = $buildConfigWorker;
-        parent::__construct();
+        $this->clientConfigMapper  = $clientConfigMapper;
+        $this->clientKeyMapper     = $clientKeyMapper;
+        $this->clientKey           = $clientKey;
+        $this->clientParamMapper   = $clientParamMapper;
     }
 
-    public function buildConfigFile($account, $server){
-        // call worker to build config
-        $configTempalte = $this->getConfigTemplate();
-        $config = $this->buildConfigWorker->run($account, $server, $configTempalte);
-
-        $this->accountId = $account;
-        $this->server    = $server;
-        $this->config    = $config;
-        $this->modified  = date("Y-m-d H:i:s");
-    }
-
-    public static function getConfigTemplate(){
-        return $config = file_get_contents(self::CONFIG_TEMPLATE_FILE);
-    }
-
-
-    /*public function getConfigFile($accountId, $server)
+    public function run( $account, $server, $config )
     {
+        $clientKey          = $this->clientKey;
+        $clientKeyMapper    = $this->clientKeyMapper;
+        $clientConfigMapper = $this->clientConfigMapper;
+
         try{
-            $clientConfig = $sm->get('Lib\Openvpn\Mapper\ClientConfig')->find(array($accountId,$server));
-            return $clientConfig->getConfig();
-        }catch(Exception\ObjectNotFoundException $e){
-            $clientKey = $sm->get('Lib\Openvpn\Model\ClientKey');
-            $clientKey->buildKey( $accountId );
-            $clientKeyMapper = $sm->get('Lib\Openvpn\Mapper\ClientKey')->save($clientKey); 
-        }
-    }*/
+            // Crt/Keys process
+            $clientKey->buildKey( $account );
+            $clientKeyMapper->save( $clientKey );
+            $config = $clientKey->replaceConfigKey( $config );
 
+            // Params process
+
+            return $config;
+
+        }
+        catch(Exception\ObjectNotFoundException $e){
+        }
+        catch(\Exception $e){
+        }
+    }
+
+}
 
     // buildConfig($host, $account)  from config param
        // build key  & buile Param
@@ -94,12 +86,6 @@ class ClientConfig extends ClientConfigEntity
               // configMapper->find($account)
               // $this->confg = $this->buildParamConfig($host, $account, $config)
               // save - configMapper->save($this);
-
-//http://stackoverflow.com/questions/3191131/read-edit-save-config-files-php
-    /*$file = file_get_contents('/path/to/config/file');
-$matches = array();
-preg_match('/^database\.params\.dbname = (.*)$/', $file, $matches);
-$file = str_replace($matches[1], $new_value, $file);
-file_put_contents('/path/to/config/file', $file);*/
-
-}
+// call Util/easyRsa::build()
+// save key to client key db
+// ClientConfig::buildConfig() & saveConfig
