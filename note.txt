@@ -31,6 +31,10 @@ curl -k -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" http://
 curl -k -s -u 'watervpn:landmark5!' -H "Content-Types: application/json" -X DELETE http://api.dev.alfredkan.com/radius/account/superman | python -m json.tool
 
 
+// Openvpn getconfigconfig
+curl -k -s -u 'watervpn:landmark5!' -H "Content-Type: application/json" -X POST -d '{"account":"client15","server":"ca3"}' http://api-test.dev.alfredkan.com/openvpn/getClientConfig
+
+
 // Install or Deploy Setup
 --------------------------
 
@@ -160,8 +164,21 @@ id, filename, fileContent,
 // opvn service
 $openvpn->getRas( $account );
 
+$openvpn = WvpnClient\WebService::getServiceClient( 'openvpn' );
 $openvpn->setConnectionFileParams( $account, $key, $value );
-$openvpn->getConnectionFile( $server, $account, downloadable=false );
+$openvpn->getCleintConfig( $server, $account, downloadable=false );
+$openvpn->getCleintConfig( 'ca1', 'xawysfa', downloadable=false );
+$openvpn->
+
+
+// opvn set params 
+set per user, and which default for all location
+
+// opvn dyname config file
+  options will override all params in database, and we don't need to save the overide optons (is temp)
+$openvpn->getConfigConfig( $server, $account, $option = array('remote'=>'abc', limit => '200') )
+
+getClientConfig
 
 $openvpn->getServers();
 $openvpn->getServer( $serverName );
@@ -188,9 +205,14 @@ vpn_server (index: name, location, status)
     // location us
     id, server_name, ip, location, status, capisabit, info
 opvn_client_parms
-    account, server-name, parm, value, modifyTime
+note: delete all params after build config & remove updated
+    account, server-name, parm, value, modified, updated
+    new 2 version;
+    account, server-name, parms (array(key,value))[json] modified, updated 
     account name :defaul_confg, server-name: ca1,  parm: url, value: ca1.watervpn.com
     account name :defaul_confg, parm: url, value: ca1.watervpn.com
+    account name :temp_confg, parm: url, value: ca1.watervpn.com
+    account, parms, modified, updated
     ex: remote-url = ca1.watervpn.com
 // when ws call this echo fileContent
 opvn_client_config   // connection file
@@ -221,9 +243,21 @@ http://www.codejungle.org/site/Realtime+bandwidth+meter+with+php+and+jquery.html
 compare 1 second different
 /sys/class/net/$interface_name/statistics/rx_bytes and tx_bytes
 
+// Graph
+Grafana.org
+
+// Openvpn import profile from access server
+curl -k -u 'alfred:pass' https://vpn.alfredkan.com:943/rest/GetUserlogin
+//https://docs.openvpn.net/docs/access-server/openvpn-access-server-command-line-tools.html
 
 // radius account short hast
 http://www.sitepoint.com/building-your-own-url-shortener/
 http://hashids.org/php/
 https://github.com/ivanakimov/hashids.php
 
+// Service manager
+http://stackoverflow.com/questions/16875194/getting-the-service-locator-anywhere-in-zf2
+https://github.com/fezfez/ServiceLocatorFactory
+// sm mapper
+http://stackoverflow.com/questions/14021870/zf2-how-to-get-service-manager-in-mapper
+http://stackoverflow.com/questions/18961988/how-to-get-an-instance-of-servicemanager-into-a-model-in-zf2

@@ -6,14 +6,12 @@ use Lib\Base\AbstractEntity;
 class ClientConfig extends AbstractEntity
 {
     protected $accountId;
-    protected $server;
     protected $config;
     protected $modified;
 
-    public function __construct($accountId = null, $server = null, $config = null, $modified = null)
+    public function __construct($accountId = null, $config = null, $modified = null)
     {
         $this->accountId  = $accountId;
-        $this->server   = $server;
         $this->config   = $config;
         $this->modified = $modified;
     }
@@ -22,10 +20,6 @@ class ClientConfig extends AbstractEntity
     public function getAccountId()
     {
         return $this->accountId;
-    }
-    public function getServer()
-    {
-        return $this->server;
     }
     public function getConfig()
     {
@@ -41,13 +35,10 @@ class ClientConfig extends AbstractEntity
     {
         $this->accountId = $accountId;
     }
-    public function setServer($server)
-    {
-        $this->server = $server;
-    }
     public function setconfig($config)
     {
         $this->config = $config;
+        $this->setModified( date("Y-m-d H:i:s") );
     }
     public function setModified($modified)
     {
@@ -60,7 +51,6 @@ class ClientConfig extends AbstractEntity
     public function exchangeArray(array $data)
     {
         $this->accountId    = (!empty($data['account_id'])) ? $data['account_id'] : null;
-        $this->server       = (!empty($data['server'])) ? $data['server'] : null;
         $this->config       = (!empty($data['config'])) ? $data['config'] : null;
         $this->modified     = (!empty($data['modified'])) ? $data['modified'] : null;
     }
@@ -72,7 +62,6 @@ class ClientConfig extends AbstractEntity
     {
         return array(
             'account_id' => $this->accountId,
-            'server'     => $this->server,
             'config'     => $this->config,
             'modified'   => $this->modified,
         );

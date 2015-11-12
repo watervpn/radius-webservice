@@ -13,15 +13,16 @@ class ClientKey extends ClientKeyEntity
     // business level methods 
 
     private $mapper;
-    public function setMapper($mapper)
+    public function __construct($mapper = null)
     {
         $this->mapper = $mapper;
+        parent::__construct();
     }
 
     public function replaceConfigKey($config)
     {
         $config = \Lib\Openvpn\Util\ConfigHelper::replaceKey('cert', $this->getCrtKey(), $config);
-        $config = \Lib\Openvpn\Util\ConfigHelper::replaceKey('key', $this->getKey(), $config);
+        $config = \Lib\Openvpn\Util\ConfigHelper::replaceKey('key', $this->getPrvKey(), $config);
         return $config;
     }
 
@@ -68,6 +69,13 @@ class ClientKey extends ClientKeyEntity
     {
         $matches = array();
         preg_match('/-----BEGIN CERTIFICATE-----.*-----END CERTIFICATE-----/s', $this->getCrt(), $matches);
+        return $matches[0];
+    }
+
+    public function getPrvKey()
+    {
+        $matches = array();
+        preg_match('/-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----/s', $this->getKey(), $matches);
         return $matches[0];
     }
 

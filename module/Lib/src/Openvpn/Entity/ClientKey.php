@@ -50,14 +50,17 @@ class ClientKey extends AbstractEntity
     public function setCrt($crt)
     {
         $this->crt = $crt;
+        $this->setModified( date("Y-m-d H:i:s") );
     }
     public function setKey($key)
     {
         $this->key = $key;
+        $this->setModified( date("Y-m-d H:i:s") );
     }
     public function setCsr($csr)
     {
         $this->csr = $csr;
+        $this->setModified( date("Y-m-d H:i:s") );
     }
     public function setModified($modified)
     {
