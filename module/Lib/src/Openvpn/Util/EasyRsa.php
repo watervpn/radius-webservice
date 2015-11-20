@@ -69,7 +69,25 @@ class EasyRsa
         if( $return !== 0 ){
             throw new \Exception("Error delete openvpn client key filename: $filename Exception".print_r($op, true));
         }
+        // Remove pem files
+        self::deletePermFiles();
         return $op;
+    }
+
+    /**
+     * Delete all perm (except crl.pem file)
+     * Each client key creation generate new perm file, and we don't need to keep this file
+     */
+    public static function deletePermFiles()
+    {
+        $pemFiles = glob( sprintf('%s/keys/*.pem', self::getPath()) ); 
+        $keepPemFile =  array_search( self::getPath().'/keys/crl.pem', $pemFiles );
+        // remove keepPemFile from delete's list
+        unset($pemFiles[$keepPemFile]);
+
+        foreach($pemFiles as $pemFile){
+            unlink($pemFile);
+        }
     }
 
     /**

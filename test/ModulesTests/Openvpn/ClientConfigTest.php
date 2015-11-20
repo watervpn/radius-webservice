@@ -8,7 +8,7 @@ class ClientConfigTest extends PHPUnit_Framework_TestCase
 {
     // service manager
     protected $sm;
-    protected $account = 'phpunitClient1';
+    protected $account = 'phpunitClient2';
      
     public function setUp()
     {
@@ -67,6 +67,8 @@ class ClientConfigTest extends PHPUnit_Framework_TestCase
         $key = $matches[1];
         $this->assertNotEmpty( $key );
 
+        // delete params
+        $this->sm->get('Lib\Openvpn\Mapper\ClientParam')->delete($clientParam);
 
     }
 
