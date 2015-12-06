@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Run as apache user
-# Example: su -s /bin/sh apache -c "./install"
+# Example: su -s /bin/sh apache -c "./install.sh"
 # 1) Make sure Openvpn dir have permission for apache to create dir
 # 2) su -s /bin/sh apache -c "./install"
 
