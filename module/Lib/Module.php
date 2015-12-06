@@ -47,7 +47,7 @@ class Module
                 },
                 // Webservice db Abstract
                 'Db\Webservice' => function ($sm) {
-                    return $sm->get('webserver_dev');
+                    return $sm->get('webserver_prod');
                 },
 
             ),

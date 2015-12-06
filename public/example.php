@@ -1,5 +1,6 @@
 <?php
-require_once('lib_autoloader.php');
+//require_once('lib_autoloader.php');
+require_once('Bootstrap.php');
 
 try{
     echo "<br/>start<br/>";
