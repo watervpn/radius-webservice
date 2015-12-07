@@ -3,6 +3,7 @@
 # Run as apache user
 # Example: su -s /bin/sh apache -c "./install.sh"
 # 1) Make sure Openvpn dir have permission for apache to create dir
+# 2) sudo ./install
 # 2) su -s /bin/sh apache -c "./install"
 
 # Initial Setup
@@ -71,8 +72,8 @@ function config_easyras(){
 
     # Prepare Generate Easy RAS Env & default Easy RAS values
     cd $easyRsaPath 
-    yes | source ./clean-all
     source ./vars
+    yes | source ./clean-all
 
     # Copy Ca keys template
     # We don't need to copy ca.key private we only need ca.crt
