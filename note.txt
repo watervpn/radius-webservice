@@ -261,3 +261,12 @@ https://github.com/fezfez/ServiceLocatorFactory
 // sm mapper
 http://stackoverflow.com/questions/14021870/zf2-how-to-get-service-manager-in-mapper
 http://stackoverflow.com/questions/18961988/how-to-get-an-instance-of-servicemanager-into-a-model-in-zf2
+
+// unit test
+http://devblog.x2k.co.uk/getting-phpunit-working-with-a-zend-framework-2-mvc-application/
+https://samsonasik.wordpress.com/2013/11/19/zendframework-2-centralize-phpunit-test/
+
+// google drive centos sync
+https://timothy-quinn.com/backing-up-linux-server-files-to-google-drive/
+https://github.com/prasmussen/gdrive
+
