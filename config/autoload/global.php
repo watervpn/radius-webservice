@@ -10,9 +10,7 @@ return array(
     'db' => array(
         'adapters' => array(
             'radius_prod' => array(),
-            'radius_dev' => array(),
             'webserver_prod' => array(),
-            //'webserver_dev' => array(),
         ),
     ),
 );
