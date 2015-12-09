@@ -3,8 +3,8 @@
 # Run as apache user
 # Example: su -s /bin/sh apache -c "./install.sh"
 # 1) Make sure Openvpn dir have permission for apache to create dir
-# 2) sudo ./install
-# 2) su -s /bin/sh apache -c "./install"
+# 2) sudo yum -y install easy-rsa
+# 3) su -s /bin/sh apache -c "./install.sh"
 
 # Initial Setup
 # arg0 execute command
