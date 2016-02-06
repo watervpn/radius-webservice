@@ -5,7 +5,7 @@ require_once('Bootstrap.php');
 try{
     echo "<br/>start<br/>";
 
-    $testMapper = $sm->get('Lib\Radius\CheckMapper'); 
+    $testMapper = $sm->get('Lib\Radius\Mapper\Check'); 
     $obj = $testMapper->findByUser('roy');
     $obj = $obj->current();
     var_dump($obj);
