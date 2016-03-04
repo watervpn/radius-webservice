@@ -270,3 +270,100 @@ https://samsonasik.wordpress.com/2013/11/19/zendframework-2-centralize-phpunit-t
 https://timothy-quinn.com/backing-up-linux-server-files-to-google-drive/
 https://github.com/prasmussen/gdrive
 
+// Server Info
+$openvpn->getServerInfo( $serverName = 'all', $region, $latest, $sortBy = 'region,server');
+
+    // Entity & mapper
+    ServerInfo(region[ca], server[ca1], vpnUsers, bandwidth, status[can't get reply from server], cpu, memory, info[store json format])
+    // Model
+    ServerInfo->getInfo( $fresh );
+        - Check is within last 5 mins
+        - Check if data in db
+        - Fetch remote server info
+    // Util
+    getServerInfo [script]
+    Process( $cmd[command to exec] )
+
+ // Server Status (new)
+     // Entity 
+            serverStatus
+     // Mapper 
+            getAll();
+            getStatusByServerName()
+            getStatusByRegion()
+            getStatusByCity()
+            // for mutliProcess to know what available server names to fetch
+            getServerNames();
+     // Model
+            PullServerStatus
+            fetchServerStatus( $serverName );
+            fetchAllServerStatus();
+     // Util
+            // from base/lib
+            // use Cmd & remote in stand alone script file
+            Cmd( $cmd ) [use RAS key]
+                user
+                host
+                run();
+            RemoteCmd [inhert Cmd class]
+            processScript [PullVpnServerStatusProcess] (extend Process interface)
+                $cmd = new RemoteCmd('ls status log');
+                $cmd->setHost('ca1'.$watervpnDomain)
+                run(){
+                    $status = $cmd->run()
+                    $serverStatus->setStatus($status);
+                    $mapper->save($serverstatus);
+                }
+            SingleProcess // ProcessInterface
+                $multprocess = new Mutliprocess();
+                foreach($servers as $server){
+                    $process = new PullVpnServerStatusProcess($host, $user);
+                    $MutliProcess->add($process);
+                }
+                $process->run();
+                function run(){
+                    
+                }
+            // MutlProcess call 
+            // Process passing script file
+            MutliProcesseses
+                $MutliProcesses->add($process1);
+                $MutliProcesses->add($process2);
+                $Mutliprocesses->run();
+                run(){
+                    // getAllProcesses();
+                    exec( forkScript + self, classname, method );
+                }
+            ForkScript (accept Mutliprocesses obj)
+                foreach($Mutliprocesses as $pcocess){
+                    $pid = pcntl_fork();
+                }
+     // Worker
+            // call by webservice & cron
+            PullServerStatus::run( $serverName = 'all' ){
+            FetchServerStatus::run( $serverName = 'all' ){
+                $serverNames = $mapper->getServerNames();
+                foreach($serverNames as $severName){
+                    MultProcess->add( script/ $serverName)
+                }
+
+                return $serverStatusMapper->getAll();
+            }
+                
+     // DB
+            table: opvn_server_status 
+            [index] [index] [index]
+            server, region,  city     , user_total, dl_kbs, ul_kbs, , eth,   info (cup, memory),           ,modifyTime (Y-m-d:H:i:s)
+            ca1   , canada,  vancouver, 300       , 2000     , eth0,  {"cpu":"90%","memory":"250MB"}, 2016-02-01:  
+            ca2   , canada,  toronto  , 300       , 2000     , ens32, {"cpu":"90%","memory":"250MB"}  
+
+            server, region,  city     , total_users, download  , upload  , download_avail, upload_avail , eth,   info (cup, memory),           , modifyTime (Y-m-d:H:i:s)
+            ca1   , canada,  vancouver, 300        , 2000      , 3000    , 10000        , 10000       , eth0,  {"cpu":"90%","memory":"250MB"}, 2016-02-01:  
+            ca2   , canada,  toroneto , 300        , 2000      , 3000    , 10000        , 10000       , eth0,  {"cpu":"90%","memory":"250MB"}, 2016-02-01:  
+      // Note
+      sshpass -p "YOUR_PASSWORD" ssh -o StrictHostKeyChecking=no YOUR_USERNAME@SOME_SITE.COM
+        
+
+
+
+

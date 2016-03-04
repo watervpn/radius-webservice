@@ -54,20 +54,30 @@ class MultiProcess
      *
      * @param array
      */
-    public function run()
+    public function run( $async = false)
     {
         $this->verify();
-        $this->doRun();
+        return $this->doRun( $async );
     }
 
-    public function doRun()
+    /**
+     * @param async: true (Not wait for response, return execution control back), false (wait for response)
+     */
+    public function doRun( $async )
     {
         // serialize obj to pass into php command script as argv
         $processes = base64_encode(serialize($this)); 
-        $command   = "php {$this->cwd}/Fork.php $processes"; 
+        if($async){
+            // php cmd to Async, response  must not output back to php 
+            // Redirect both stdout and stderr to /dev/null then put it to background 
+            $command   = "php {$this->cwd}/Fork.php $processes > /dev/null 2>&1 &"; 
+        }else{
+            $command   = "php {$this->cwd}/Fork.php $processes"; 
+        }
         exec($command, $op, $return);
-        var_dump($op);
-        var_dump($return);
+        return $op;
+        /*var_dump($op);
+        var_dump($return);*/
 
     }
 

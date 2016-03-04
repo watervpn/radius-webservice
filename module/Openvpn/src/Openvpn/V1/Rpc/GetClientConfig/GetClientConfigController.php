@@ -15,12 +15,11 @@ class GetClientConfigController extends AbstractActionController
     {
         //https://groups.google.com/a/zend.com/forum/#!topic/apigility-users/V2t1GYVQR-c
         //$event = $this->getEvent();
-        //$worker = $this->sm->get('Lib\Openvpn\Worker\BuildClientConfig');
+        $worker = $this->sm->get('Lib\Openvpn\Worker\GetClientConfig');
         $data = $this->bodyParams();
-        $clientConfig = $this->sm->get( 'Lib\Openvpn\Model\ClientConfig' );
 
         if(isset($data['account']) && isset($data['server'])){
-            $config = $clientConfig->getConfigFile( $data['account'], $data['server'] );
+            $config = $worker->run($data['account'], $data['server']);
 
             return new ViewModel(
                 array('config'=> $config)

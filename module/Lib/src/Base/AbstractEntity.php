@@ -15,11 +15,21 @@ Abstract class AbstractEntity
      * @param array
      */
     abstract public function exchangeArray(array $data);
-    
+
     /**
      * Convert object to array
      *
      * @return array
      */
     abstract public function getArrayCopy();
+
+    /**
+     * Convert object to array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->getArrayCopy();
+    }
 }

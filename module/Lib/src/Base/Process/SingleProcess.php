@@ -6,6 +6,7 @@ namespace Lib\Base\Process;
 Abstract class SingleProcess
 {
     protected $name;
+    protected $sm;
 
     public function __construct( $name = "unname")
     {
@@ -20,6 +21,16 @@ Abstract class SingleProcess
     public function getName()
     {
         return $this->name;
+    }
+
+    public function setServiceManager( $sm )
+    {
+        $this->sm = $sm;
+    }
+
+    public function getServiceManager()
+    {
+        return $this->sm;
     }
 
     // __DIR__

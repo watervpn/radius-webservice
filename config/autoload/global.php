@@ -4,6 +4,7 @@ return array(
         'authentication' => array(
             'map' => array(
                 'radius\\V1' => 'status',
+                'Openvpn\\V1' => 'status',
             ),
         ),
     ),

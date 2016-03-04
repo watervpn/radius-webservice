@@ -8,14 +8,14 @@ class ClientParam extends AbstractEntity
     protected $accountId;
     protected $params;
     protected $modified;
-    protected $updated;
+    protected $dirty;
 
-    public function __construct($accountId = null, $params = null, $modified = null, $updated = null)
+    public function __construct($accountId = null, $params = null, $modified = null, $dirty = null)
     {
         $this->accountId  = $accountId;
         $this->params      = $params;
         $this->modified   = $modified;
-        $this->updated    = (bool)$updated;
+        $this->dirty    = (bool)$dirty;
     }
 
     public function addParam($key, $value)
@@ -49,9 +49,9 @@ class ClientParam extends AbstractEntity
     {
         return $this->modified;
     }
-    public function getUpdated()
+    public function getDirty()
     {
-        return (bool)$this->updated;
+        return (bool)$this->dirty;
     }
 
     // Setter
@@ -61,9 +61,8 @@ class ClientParam extends AbstractEntity
     }
     public function setParams(array $params)
     {
-        $this->validateParams($params);
         $this->params =  json_encode($params, true);
-        $this->setUpdated(true);
+        $this->setDirty(true);
         $this->setModified( date("Y-m-d H:i:s") );
     }
     public function setParam($key, $value)
@@ -74,9 +73,9 @@ class ClientParam extends AbstractEntity
     {
         $this->modified = $modified;
     }
-    public function setUpdated($updated)
+    public function setDirty($dirty)
     {
-        $this->updated = (bool)$updated;
+        $this->dirty = (bool)$dirty;
     }
 
     /**
@@ -87,7 +86,7 @@ class ClientParam extends AbstractEntity
         $this->accountId    = (!empty($data['account_id'])) ? $data['account_id'] : null;
         $this->params        = (!empty($data['params'])) ? $data['params'] : null;
         $this->modified     = (!empty($data['modified'])) ? $data['modified'] : null;
-        $this->updated      = (!empty($data['updated'])) ? (bool)$data['updated'] : null;
+        $this->dirty      = (!empty($data['dirty'])) ? (bool)$data['dirty'] : null;
     }
 
     /**
@@ -99,7 +98,7 @@ class ClientParam extends AbstractEntity
             'account_id' => $this->accountId,
             'params'      => $this->params,
             'modified'   => $this->modified,
-            'updated'    => (bool)$this->updated,
+            'dirty'    => (bool)$this->dirty,
         );
     }
 }

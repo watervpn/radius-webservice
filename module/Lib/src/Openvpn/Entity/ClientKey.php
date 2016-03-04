@@ -68,6 +68,26 @@ class ClientKey extends AbstractEntity
     }
 
     /**
+     * strip extra and return public key section only
+     */
+    public function getCrtKey()
+    {
+        $matches = array();
+        preg_match('/-----BEGIN CERTIFICATE-----.*-----END CERTIFICATE-----/s', $this->getCrt(), $matches);
+        return $matches[0];
+    }
+
+    /**
+     * strip extra and return private key section only
+     */
+    public function getPrvKey()
+    {
+        $matches = array();
+        preg_match('/-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----/s', $this->getKey(), $matches);
+        return $matches[0];
+    }
+
+    /**
      * Implement Abstract exchangearray
      */
     public function exchangeArray(array $data)
