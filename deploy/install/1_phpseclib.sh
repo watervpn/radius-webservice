@@ -41,6 +41,6 @@ function main(){
     install_phpseclib
 }
 
-# Init main function
+# Init main function 
 main
 
