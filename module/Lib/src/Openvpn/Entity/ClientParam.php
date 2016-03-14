@@ -22,13 +22,13 @@ class ClientParam extends AbstractEntity
     {
         $params = $this->getParams();
         $params[$key] = $value;
-        $this->setParams($params);
+        return $this->setParams($params);
     }
     public function deleteParam($key)
     {
         $params = $this->getParams();
         unset( $params[$key] );
-        $this->setParams($params);
+        return $this->setParams($params);
     }
 
     // Getter
@@ -58,24 +58,29 @@ class ClientParam extends AbstractEntity
     public function setAccountId($accountId)
     {
         $this->accountId = $accountId;
+        return $this;
     }
     public function setParams(array $params)
     {
         $this->params =  json_encode($params, true);
         $this->setDirty(true);
         $this->setModified( date("Y-m-d H:i:s") );
+        return $this;
     }
     public function setParam($key, $value)
     {
         $this->addParam($key, $value);
+        return $this;
     }
     public function setModified($modified)
     {
         $this->modified = $modified;
+        return $this;
     }
     public function setDirty($dirty)
     {
         $this->dirty = (bool)$dirty;
+        return $this;
     }
 
     /**

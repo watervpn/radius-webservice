@@ -46,25 +46,30 @@ class ClientKey extends AbstractEntity
     public function setAccountId($accountId)
     {
         $this->accountId = $accountId;
+        return $this;
     }
     public function setCrt($crt)
     {
         $this->crt = $crt;
         $this->setModified( date("Y-m-d H:i:s") );
+        return $this;
     }
     public function setKey($key)
     {
         $this->key = $key;
         $this->setModified( date("Y-m-d H:i:s") );
+        return $this;
     }
     public function setCsr($csr)
     {
         $this->csr = $csr;
         $this->setModified( date("Y-m-d H:i:s") );
+        return $this;
     }
     public function setModified($modified)
     {
         $this->modified = $modified;
+        return $this;
     }
 
     /**

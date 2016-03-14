@@ -34,15 +34,18 @@ class ClientConfig extends AbstractEntity
     public function setAccountId($accountId)
     {
         $this->accountId = $accountId;
+        return $this;
     }
     public function setconfig($config)
     {
         $this->config = $config;
         $this->setModified( date("Y-m-d H:i:s") );
+        return $this;
     }
     public function setModified($modified)
     {
         $this->modified = $modified;
+        return $this;
     }
 
     /**

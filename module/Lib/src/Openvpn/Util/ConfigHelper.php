@@ -13,14 +13,16 @@ class ConfigHelper
         //preg_match("/[^;]{$key}\s(.*)/", $config, $matches);
         preg_match("/\r\n{$key}\s(.*)/", $config, $matches);
         //preg_match("/\n{$key}\s(.*)/", $config, $matches);
+        
         // Add if key not found in config
         if(empty($matches)){
             $strpos = strpos($config ,'<ca>');
             $config = substr_replace($config, "{$key} {$value}\r\n", $strpos - 1, 0 );
             return $config;
         }
-        $config = str_replace("{$matches[1]}", $value, $config);
-        //var_dump($config);
+
+        $pattern = "/(\r\n{$key}\s)(.*)/";
+        $config = preg_replace($pattern, '${1}'.$value, $config);
         return $config;
     }
 

@@ -35,7 +35,6 @@ class Module
     }
     public function getServiceConfig()
     {
-        //return array(
         $default = array(
             'factories' => array(
                 /*
@@ -51,6 +50,21 @@ class Module
                 },
 
             ),
+            'initializers' => array(               
+                /*
+                 * Init static service manager, so we can get service anywhere
+                 */
+                'ObjectHelper' => function($service, $sm) {
+                    // inject service manager  only when controllerManager get call
+                    if($service instanceof \Zend\Mvc\Controller\ControllerManager){
+                        \Lib\ServiceManager::setServiceManager($sm);
+                    }
+                }
+            ),
+
+        );
+
+        $init = array(
         );
 
         //return array_merge($default, $this->getOpenvpnConfig());

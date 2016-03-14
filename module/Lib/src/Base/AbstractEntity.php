@@ -9,6 +9,43 @@ Abstract class AbstractEntity
     public function __construct(){
     }
 
+    private function getMapper()
+    {
+        $mapperNameSpace = explode('\\', get_class($this) );
+        return \Lib\ServiceManager::getMapper($mapperNameSpace[1], $mapperNameSpace[3]);
+    }
+
+    public function load($id)
+    {
+        return $this->getMapper()->find($id);
+    }
+
+    public function save()
+    {
+        $this->getMapper()->save($this);
+        return $this;
+    }
+
+    public function update()
+    {
+        return $this->save();
+    }
+
+    public function delete()
+    {
+        return $this->getMapper()->delete($this);
+    }
+
+    public function fetch($id)
+    {
+        return $this->getMapper()->find($id);
+    }
+
+    public function fetchAll($offset =0, $limit=100)
+    {
+        return $this->getMapper()->findAll($offset, $limit);
+    }
+
     /**
      * Convert array to object
      *

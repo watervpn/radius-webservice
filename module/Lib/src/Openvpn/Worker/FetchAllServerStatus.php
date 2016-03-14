@@ -1,7 +1,7 @@
 <?php
 namespace Lib\Openvpn\Worker;
 
-use Lib\Base\AbstractModel;
+use Lib\Base\AbstractEntity;
 use Lib\Base\Process\MultiProcess;
 use Lib\Base\Exception as Exception;
 use Lib\Openvpn\Process\ServerFetchStatusProcess;
@@ -13,7 +13,7 @@ class FetchAllServerStatus
      */
     private $serverStatus;
 
-    public function __construct(AbstractModel $serverStatus)
+    public function __construct(AbstractEntity $serverStatus)
     {
         $this->serverStatus = $serverStatus;
     }

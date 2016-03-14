@@ -20,8 +20,18 @@ class TestProcess extends SingleProcess
      */
     public function run()
     {
+
+        $ca1 = new \Lib\Openvpn\Util\ServerFetchStatus('ca1.watervpn.com');
+        list($dl, $ul) = $ca1->getBandwidth();
+        echo "process is running ####### download[{$dl}] ###upload:[{$ul}]####\r\n";
+
+        /*
         $time = rand(1,5);
         sleep($time);
+
+        //error_log("process is running ####### [{$this->getName()}] ###time:[{$time}]####\r\n");
+        //file_put_contents('/tmp/alfred/proLog.txt', "process is running ####### [{$this->getName()}] ###time:[{$time}]####\r\n");
         echo "process is running ####### [{$this->getName()}] ###time:[{$time}]####\r\n";
+         */
     }
 }

@@ -8,31 +8,36 @@ return array(
         /*
          * TableGateway
          */
+        // ClientKey Tablegateway
         'Lib\Openvpn\TableGateway\ClientKey' =>  function ($sm) {
             $adapter = $sm->get('Db\Webservice');
             $resultSetPrototype = new ResultSet();
-            $resultSetPrototype->setArrayObjectPrototype(new Openvpn\Entity\ClientKey() );
+            $model = $sm->get('\Lib\Openvpn\Model\ClientKey');
+            $resultSetPrototype->setArrayObjectPrototype($model);
             return new TableGateway('opvn_client_key', $adapter, null, $resultSetPrototype);
-        },
-        // ClientConfig Tablegateway
-        'Lib\Openvpn\TableGateway\ClientConfig' =>  function ($sm) {
-            $adapter = $sm->get('Db\Webservice');
-            $resultSetPrototype = new ResultSet();
-            $resultSetPrototype->setArrayObjectPrototype(new Openvpn\Entity\ClientConfig() );
-            return new TableGateway('opvn_client_config', $adapter, null, $resultSetPrototype);
         },
         // ClientParam Tablegateway
         'Lib\Openvpn\TableGateway\ClientParam' =>  function ($sm) {
             $adapter = $sm->get('Db\Webservice');
             $resultSetPrototype = new ResultSet();
-            $resultSetPrototype->setArrayObjectPrototype(new Openvpn\Entity\ClientParam() );
+            $model = $sm->get('\Lib\Openvpn\Model\ClientParam');
+            $resultSetPrototype->setArrayObjectPrototype($model);
             return new TableGateway('opvn_client_param', $adapter, null, $resultSetPrototype);
+        },
+        // ClientConfig Tablegateway
+        'Lib\Openvpn\TableGateway\ClientConfig' =>  function ($sm) {
+            $adapter = $sm->get('Db\Webservice');
+            $resultSetPrototype = new ResultSet();
+            $model = $sm->get('\Lib\Openvpn\Model\ClientConfig');
+            $resultSetPrototype->setArrayObjectPrototype($model);
+            return new TableGateway('opvn_client_config', $adapter, null, $resultSetPrototype);
         },
         // ServerStatus Tablegateway
         'Lib\Openvpn\TableGateway\ServerStatus' =>  function ($sm) {
             $adapter = $sm->get('Db\Webservice');
             $resultSetPrototype = new ResultSet();
-            $resultSetPrototype->setArrayObjectPrototype(new Openvpn\Entity\ServerStatus() );
+            $model = $sm->get('\Lib\Openvpn\Model\ServerStatus');
+            $resultSetPrototype->setArrayObjectPrototype($model);
             return new TableGateway('opvn_server_status', $adapter, null, $resultSetPrototype);
         },
 
@@ -65,43 +70,42 @@ return array(
          */
         // ClientKey Model
         'Lib\Openvpn\Model\ClientKey' =>  function ($sm) {
-            $clientKeyMapper = $sm->get('Lib\Openvpn\Mapper\ClientKey');
-            $clientKeyModel  = new Openvpn\Model\ClientKey( $clientKeyMapper );
-            //todo
-            //$clientKeyModel->getServiceManager($sm);
-            return $clientKeyModel;
+            return new Openvpn\Model\ClientKey();
         },
         // ClientConfig Model
         'Lib\Openvpn\Model\ClientConfig' =>  function ($sm) {
-            $clientConfigMapper = $sm->get('Lib\Openvpn\Mapper\ClientConfig');
-            $clientParamMapper  = $sm->get('Lib\Openvpn\Mapper\ClientParam');
-            //$buildConfigWorker  = $sm->get('Lib\Openvpn\Worker\BuildClientConfig');
-            $clientConfigModel  = new Openvpn\Model\ClientConfig($clientConfigMapper, $clientParamMapper);
-            return $clientConfigModel;
+            $clientKey    = $sm->get('Lib\Openvpn\Model\ClientKey');
+            $clientParam  = $sm->get('Lib\Openvpn\Model\ClientParam');
+            return new Openvpn\Model\ClientConfig($clientKey, $clientParam);
         },
         // ClientParam Model
         'Lib\Openvpn\Model\ClientParam' =>  function ($sm) {
-            $clientParamMapper = $sm->get('Lib\Openvpn\Mapper\ClientParam');
-            $clientParamModel  = new Openvpn\Model\ClientParam($clientParamMapper);
-            return $clientParamModel;
+            return new Openvpn\Model\ClientParam();
         },
         // ServerStatus Model
         'Lib\Openvpn\Model\ServerStatus' =>  function ($sm) {
-            $serverStatusMapper = $sm->get('Lib\Openvpn\Mapper\ServerStatus');
-            $serverStatusModel  = new Openvpn\Model\ServerStatus($serverStatusMapper);
-            return $serverStatusModel;
+            return new Openvpn\Model\ServerStatus();
+        },
+
+
+        /*
+         * Service 
+         */
+         // Client Config Service
+        'Lib\Openvpn\Service\ClientConfig' =>  function ($sm) {
+            $clientConfig = $sm->get('Lib\Openvpn\Model\ClientConfig');
+            return new Openvpn\Service\ClientConfig($clientConfig);
+        },
+        // Server Status Service
+        'Lib\Openvpn\Service\ServerStatus' =>  function ($sm) {
+            $serverStatus       = $sm->get('Lib\Openvpn\Model\ServerStatus');
+            $serverStatusWorker = $sm->get('Lib\Openvpn\Worker\FetchAllServerStatus');
+            return new Openvpn\Service\ServerStatus($serverStatus, $serverStatusWorker);
         },
 
         /*
          * Worker 
          */
-         // GetClientConfig
-        'Lib\Openvpn\Worker\GetClientConfig' =>  function ($sm) {
-            $clientKey = $sm->get('Lib\Openvpn\Model\ClientKey');
-            $clientParam = $sm->get('Lib\Openvpn\Model\ClientParam');
-            $clientConfig = $sm->get('Lib\Openvpn\Model\ClientConfig');
-            return new Openvpn\Worker\GetClientConfig($clientKey, $clientParam, $clientConfig);
-        },
          // FetchAllServerStatus
         'Lib\Openvpn\Worker\FetchAllServerStatus' =>  function ($sm) {
             $serverStatusModel = $sm->get('Lib\Openvpn\Model\ServerStatus');

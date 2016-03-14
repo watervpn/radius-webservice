@@ -14,17 +14,22 @@ class FetchServerStatusJobController extends AbstractActionController
 
     public function fetchServerStatusJobAction()
     {
-        $data = $this->bodyParams();
+        // get pass in params
+        $data    = $this->bodyParams();
+        $async   = (isset($data['async'])) ? $data['async'] : false;
 
-        $async = false;
-        $worker = $this->sm->get('Lib\Openvpn\Worker\FetchAllServerStatus');
-        $op = $worker->run($async);
+        // service
+        $service = $this->sm->get('Lib\Openvpn\Service\ServerStatus');
+        $op      = $service->fetchServerStatusJob($async);
 
+        $response = [];
+        $response ['status'] = 'success';
+        if(!$async){
+            $response ['responses'] = $op;
+        }
+        // view
         return new ViewModel(
-            array(
-                'status' => 'success',
-                'data' => $op
-            )
+            $response
         );
     }
 }

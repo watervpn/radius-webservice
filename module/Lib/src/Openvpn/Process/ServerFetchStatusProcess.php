@@ -41,12 +41,11 @@ class ServerFetchStatusProcess extends SingleProcess
     {
         $this->validate();
 
-        $sm           = $this->getServiceManager();
-        $serverStatus = $sm->get('Lib\Openvpn\Model\ServerStatus');
+        $serverStatus = \Lib\ServiceManager::getModel('Openvpn', 'ServerStatus')->load($this->host);
+        $serverStatus->fetchServerStatus();
+        $serverStatus->save();
 
-        $entity       = $serverStatus->fetchServerStatus($this->host);
-        $serverStatus->update($entity->toArray());
-        $this->debug($entity);
+        $this->debug($serverStatus);
     }
 
 }

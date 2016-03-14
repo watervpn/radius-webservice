@@ -1,14 +1,13 @@
 <?php
 namespace Lib\Openvpn\Model;
 
-use Lib\Base\AbstractModel;
 use Lib\Openvpn\Model\ServerStatus;
 use Lib\Openvpn\Entity\ClientParam as ClientParamEntity;
 use Lib\Base\Exception as Exception;
 /**
  * Business rules for the ClientParam 
  */
-class ClientParam extends AbstractModel
+class ClientParam extends ClientParamEntity
 {
     private $allowParams = array(
         'dev', 
@@ -27,20 +26,19 @@ class ClientParam extends AbstractModel
         'comp-lzo',
     );
 
-    public function __construct($mapper)
+    public function __construct()
     {
-        parent::__construct($mapper);
+        parent::__construct();
     }
 
     /**
-     * Overwrite create
-     * @param $account (string| account name/id)
+     * Overwrite AbstractEntity save()
      */
-    public function create(array $data)
+    public function save()
     {
-        $params = json_decode($data['params'], true);
+        $params = $this->getParams();
         $this->validateParams($params);
-        return parent::create($data);
+        return parent::save();
     }
 
     /**
@@ -56,8 +54,13 @@ class ClientParam extends AbstractModel
         }
     }
 
-    public function replaceParams(array $params, $config)
+    /**
+     * if params is set,  pass in params will be used to build config instead of client params from db
+     */
+    //private function replaceParams($config)
+    public function replaceConfig( $config )
     {
+        $params = $this->getParams();
         foreach($params as $key => $value){
             $config = \Lib\Openvpn\Util\ConfigHelper::replaceConfig($key, $value, $config);
         }
@@ -65,53 +68,18 @@ class ClientParam extends AbstractModel
     }
 
     /**
-     * Replace the config with client params
-     * @param $account (string| account name/id)
-     * @return $config (String| client config file)
-     */
-    public function replaceParamsByAccount($account, $config)
-    {
-        $params = $this->fetch($account)->getParams();
-        return $this->replaceParams($params, $config);
-    }
-
-    /**
      * set and replace server remote location
      */
-    public function replaceServerParam($server, $config ){
+    public static function replaceServerParam($server, $config ){
         $config = \Lib\Openvpn\Util\ConfigHelper::replaceConfig('remote', $server.'.'.ServerStatus::VPN_DOMAIN, $config);
         return $config;
     }
 
-    /**
-     * if params is set,  pass in params will be used to build config instead of client params from db
-     */
-    public function buildConfig( $account, $config )
-    {
-        // build with pass-in params
-        /*if(!empty($overwriteParams)){
-            return $this->replaceParams($overwriteParams, $config);
-        }*/
-        // build with saved client params
-        try{
-            return $this->replaceParamsByAccount($account, $config);
-        }
-        catch( Exception\ObjectNotFoundException $e ){
-            // Do nothing
-        }
-        return $config;
-    }
     
-    public function isDirty($account)
+    public function isDirty()
     {
-        try{
-            $entity = $this->fetch($account);
-            if($entity->getDirty()){
-                return true;
-            }
-        }
-        catch( Exception\ObjectNotFoundException $e ){ 
-            return false;
+        if($this->getDirty()){
+            return true;
         }
         return false;
     }

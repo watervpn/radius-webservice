@@ -14,18 +14,17 @@ class GetServerStatusController extends AbstractActionController
 
     public function getServerStatusAction()
     {
+        // get pass in params
         $data = $this->bodyParams();
+        $host = (isset($data['host'])) ? $data['host'] : null;
 
-        $serverStatus = $this->sm->get('Lib\Openvpn\Model\ServerStatus');
+        // service
+        $service = $this->sm->get('Lib\Openvpn\Service\ServerStatus');
+        $model   = $service->getServerStatus($host);
 
-        if(!isset($data['host'])){
-            $entities = $serverStatus->fetchAll();
-        }else{
-            $entities = $serverStatus->fetch($data['host'])->toArray();
-        }
-
+        // view
         return new ViewModel(
-            $entities
+            $model
         );
     }
 }

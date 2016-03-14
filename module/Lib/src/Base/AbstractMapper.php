@@ -37,17 +37,14 @@ Abstract class AbstractMapper
     }
 
     /**
-     * Find a record by pimary key
+     * Validate & construct TableGateway where statement
      *
      * @param  mixed|array $id
-     * @return AbstractEntity|TableGateway
+     * @return array of where statment
      */
-    public function find($ids)
+    private function processPrimaryKeys($ids)
     {
-        if(empty($this->primaryKeys)){
-            return false;
-        }
-        $data = array();
+        $where = array();
         if(is_array($ids)){
             if(array_search("", $ids) !== false){
                 throw new \Exception(__CLASS__." function: ".__FUNCTION__."() primary keys can not contain empty value :".print_r($this->ids, true));
@@ -58,7 +55,7 @@ Abstract class AbstractMapper
             }
             // convert to key & value data format
             foreach($this->primaryKeys as $key => $primaryKey){
-                $data[$primaryKey] = current($ids);
+                $where[$primaryKey] = current($ids);
                 next($ids);
             }
         }else{
@@ -66,14 +63,42 @@ Abstract class AbstractMapper
             if(count($this->primaryKeys) != 1){
                 throw new \Exception("The number of primary keys doesn't match, it should contain:".print_r($this->primaryKeys, true));
             }
-            $data[$this->primaryKeys[0]] = $ids;
+            $where[$this->primaryKeys[0]] = $ids;
         }
-        $rowset = $this->tableGateway->select($data);
-        $row = $rowset->current();
-        if (!$row) {
+        return $where;
+    }
+
+    /**
+     * Find a record by pimary key
+     *
+     * @param  mixed|array $id
+     * @return AbstractEntity|TableGateway
+     */
+    public function find($ids)
+    {
+        if(empty($this->primaryKeys)){
+            return false;
+        }
+
+        // check if Identity map exsit
+        $identityMap = \Lib\Base\IdentityMapper::getObject($this->getModelClassName(), $ids);
+        if( $identityMap ){
+            //echo "============== return copy";
+            return $identityMap;
+        }
+
+        $where  = $this->processPrimaryKeys($ids);
+        $rowset = $this->tableGateway->select($where);
+        $model  = $rowset->current();
+        if (!$model) {
             throw new Exception\ObjectNotFoundException(__CLASS__." Could not find row: [".print_r($ids, true)."]");
         }
-        return $row;
+
+        // register Identity map object 
+        \Lib\Base\IdentityMapper::registerObject($model, $ids);
+        //echo "============== return store";
+
+        return $model;
     }
 
     /**
@@ -161,6 +186,13 @@ Abstract class AbstractMapper
             $this->tableGateway->delete($ids);
         }
 
+    }
+
+    private function getModelClassName()
+    {
+        $className = get_class($this);
+        $className = str_replace('Mapper','Model',$className);
+        return $className;
     }
 
 }

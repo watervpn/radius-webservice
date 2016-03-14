@@ -17,5 +17,5 @@ $sm = new ServiceManager(new ServiceManagerConfig($smConfig));
 $sm->setService('ApplicationConfig', $configuration);
 $sm->get('ModuleManager')->loadModules();
 
-ob_start();
+//ob_start();
 

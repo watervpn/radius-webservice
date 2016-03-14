@@ -1,7 +1,6 @@
 <?php
 namespace Lib\Openvpn\Model;
 
-use Lib\Base\AbstractModel;
 use Lib\Openvpn\Entity\ClientKey as ClientKeyEntity;
 use Lib\Base\Exception as Exception;
 
@@ -9,23 +8,12 @@ use Lib\Base\Exception as Exception;
  * Business rules for the Account 
  * business level constants, properties, methds
  */
-class ClientKey extends AbstractModel
+class ClientKey extends ClientKeyEntity
 {
-    public function __construct($mapper)
-    {
-        parent::__construct($mapper);
-    }
 
-    /**
-     * replace client config file ras key 
-     * replaceConfigKey
-     */
-    public function buildConfig($account, $config)
+    public function __construct()
     {
-        $entity = $this->fetch($account);
-        $config = \Lib\Openvpn\Util\ConfigHelper::replaceKey('cert', $entity->getCrtKey(), $config);
-        $config = \Lib\Openvpn\Util\ConfigHelper::replaceKey('key', $entity->getPrvKey(), $config);
-        return $config;
+        parent::__construct();
     }
 
     /**
@@ -36,7 +24,7 @@ class ClientKey extends AbstractModel
     {
         // check if Rsa key exist
         try{
-            $clientKeyEntity = $this->fetch($account);
+            $clientKey = $this->load($account);
             throw new Exception\ObjectAlreadyExistsException(__CLASS__. " RSA key for [$account] is already exist ");
         }
         // build Rsa key if not already exist
@@ -59,16 +47,31 @@ class ClientKey extends AbstractModel
             $op   = \Lib\Openvpn\Util\EasyRsa::build($account);
             $keys = \Lib\Openvpn\Util\EasyRsa::getKeys($account);
 
-            $entity = new ClientKeyEntity($account, $keys['crt'], $keys['key'], $keys['csr'], date("Y-m-d H:i:s"));
+            $this->setAccountId($account);
+            $this->setCrt($keys['crt']);
+            $this->setKey($keys['key']);
+            $this->setCsr($keys['csr']);
 
             // Clean up Rsa key
             $op   = \Lib\Openvpn\Util\EasyRsa::revoke($account);
             $op   = \Lib\Openvpn\Util\EasyRsa::delete($account);
-            return $entity;
+            return $this;
         }catch(\Exception $e){
             // throw exception
             echo "errer buildKey<br/>";
         }
+    }
+
+    /**
+     * replace client config file ras key 
+     * replaceConfigKey
+     */
+    //public function buildConfig($config)
+    public function replaceConfig($config)
+    {
+        $config = \Lib\Openvpn\Util\ConfigHelper::replaceKey('cert', $this->getCrtKey(), $config);
+        $config = \Lib\Openvpn\Util\ConfigHelper::replaceKey('key', $this->getPrvKey(), $config);
+        return $config;
     }
 
 }
