@@ -1,5 +1,6 @@
 <?php
-require_once('Bootstrap.php');
+require_once(__DIR__.'/../../../../../public/Bootstrap.php');
+//require_once('Bootstrap.php');
 
 /**
  * Error logging
