@@ -27,6 +27,9 @@ class ClientParam extends AbstractEntity
     public function deleteParam($key)
     {
         $params = $this->getParams();
+        if(!isset($params[$key])){
+            throw new \Exception(__CLASS__." delete key:[$key] does not exist in params.");
+        }
         unset( $params[$key] );
         return $this->setParams($params);
     }

@@ -94,7 +94,8 @@ return array(
          // Client Config Service
         'Lib\Openvpn\Service\ClientConfig' =>  function ($sm) {
             $clientConfig = $sm->get('Lib\Openvpn\Model\ClientConfig');
-            return new Openvpn\Service\ClientConfig($clientConfig);
+            $clientParam  = $sm->get('Lib\Openvpn\Model\ClientParam');
+            return new Openvpn\Service\ClientConfig($clientConfig,$clientParam);
         },
         // Server Status Service
         'Lib\Openvpn\Service\ServerStatus' =>  function ($sm) {

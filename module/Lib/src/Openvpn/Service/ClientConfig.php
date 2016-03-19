@@ -9,10 +9,12 @@ use Lib\Base\Exception as Exception;
 class ClientConfig 
 {
     private $clientConfig;
+    private $clientParam;
 
-    public function __construct($clientConfig)
+    public function __construct($clientConfig, $clientParam)
     {
         $this->clientConfig  = $clientConfig;
+        $this->clientParam  = $clientParam;
     }
 
     /**
@@ -45,10 +47,64 @@ class ClientConfig
         return \Lib\Openvpn\Model\ClientParam::replaceServerParam($server, $config);
     }
 
+    /**
+     * Return clientParam object
+     * @param $account string
+     */
+    public function getParam($accountId)
+    {
+        return $this->clientParam->load($accountId);
+    }
 
-    /*public function getParam();
-    public function setParam();
-    public function deleteParam();*/
+    /**
+     * Save a openvpn client param
+     * @param $account string
+     * @param $key string (remote,dev,user etc..)
+     */
+    public function setParam($accountId, $key, $value)
+    {
+        $clientParam = $this->clientParam;
+        try{
+            $clientParam = $clientParam->load($accountId);
+        }
+        catch( Exception\ObjectNotFoundException $e ){
+            $clientParam->setAccountId($accountId);
+        }
+        return $clientParam->setParam($key, $value)->save();
+    }
+
+    /**
+     * Save openvpn client params
+     * @param $account string
+     * @param $key string (remote,dev,user etc..)
+     */
+    public function setParams($accountId, array $data)
+    {
+        $clientParam = $this->clientParam;
+        try{
+            $clientParam = $clientParam->load($accountId);
+        }
+        catch( Exception\ObjectNotFoundException $e ){
+            $clientParam->setAccountId($accountId);
+        }
+
+        foreach($data as $key => $value){
+            $clientParam->setParam($key, $value);
+        }
+        return $clientParam->save();
+    }
+
+    /**
+     * @param $account string
+     * @param $key string (remote,dev,user etc..)
+     */
+    public function deleteParam($accountId, $key)
+    {
+        return $this->clientParam
+            ->load($accountId)
+            ->deleteParam($key)
+            ->save();
+    }
 
 
 }
