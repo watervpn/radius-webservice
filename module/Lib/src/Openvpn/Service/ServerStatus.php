@@ -27,7 +27,7 @@ class ServerStatus
         if(empty($host)){
             $entities = $serverStatus->fetchAll();
         }else{
-            $entities = $serverStatus->load($host)->toArray();
+            $entities = $serverStatus->load($host);
         }
         return $entities;
     }

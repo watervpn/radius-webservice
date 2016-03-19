@@ -24,7 +24,7 @@ class GetServerStatusController extends AbstractActionController
 
         // view
         return new ViewModel(
-            $model
+            $model->toArray()
         );
     }
 }
