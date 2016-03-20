@@ -16,7 +16,7 @@ CREATE TABLE `opvn_server_status` (
       KEY `server` (`host`),
       KEY `region` (`region`),
       KEY `city` (`city`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 insert into opvn_server_status (host,region,city,total_users,download,upload,download_avail,upload_avail,cpu,mem,eth,info,modified) values ('ca1', 'Canada', 'Montreal',NULL,0,0,100000,100000,0,0,'ens32',NULL,'2016-03-03 13:47:10');
-insert into opvn_server_status (host,region,city,total_users,download,upload,download_avail,upload_avail,cpu,mem,eth,info,modified) values ('jp1', 'Japan', 'Tokyo',NULL,0,0,100000,100000,0,0,'ens32',NULL,'2016-03-03 13:47:10');
+insert into opvn_server_status (host,region,city,total_users,download,upload,download_avail,upload_avail,cpu,mem,eth,info,modified) values ('jp1', 'Japan', 'Tokyo',NULL,0,0,100000,100000,0,0,'eth0',NULL,'2016-03-03 13:47:10');
