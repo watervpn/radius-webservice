@@ -24,4 +24,5 @@ return array(
     'Lib',
     'radius',
     'Openvpn',
+    'ZfrCors',  // CORS - perform cross-origin requests from your browser.
 );
