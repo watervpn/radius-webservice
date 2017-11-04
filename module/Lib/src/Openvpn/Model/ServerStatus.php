@@ -36,16 +36,6 @@ class ServerStatus extends ServerStatusEntity
         return $this;
     }
 
-    public function getByRegion($region, $orderby=null, $sort=null, $offset = 0, $limit = 100)
-    {
-        return $this->getMapper()->findByRegion($region,$orderby,$sort,$offset,$limit);
-    }
-
-    public function getRegions()
-    {
-        return $this->getMapper()->getRegions();
-    }
-
 
 }
 

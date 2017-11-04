@@ -47,15 +47,6 @@ class ClientConfig
         return \Lib\Openvpn\Model\ClientParam::replaceServerParam($server, $config);
     }
 
-    public function getConfigs($account, array $servers)
-    {
-        $files = [];
-        foreach($servers as $server){
-           $files[$server] = $this->getConfig($account, $server); 
-        }
-        return $files;
-    }
-
     /**
      * Return clientParam object
      * @param $account string

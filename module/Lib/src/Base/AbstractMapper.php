@@ -106,24 +106,10 @@ Abstract class AbstractMapper
      *
      * @return AbstractEntity|TableGateway
      */
-    //public function findAll($offset = 0, $limit = 100)
-    public function findAll($orderby=null, $sort=null, $offset = 0, $limit = 100)
+    public function findAll($offset = 0, $limit = 100)
     {
         //$resultSet = $this->tableGateway->select();
-        $resultSet = $this->tableGateway->select(function (Select $select) use ($orderby, $sort, $offset, $limit){
-            // order by clause
-            if(!empty($orderby)){
-                if(is_array($orderby)){
-                    if(!empty($sort)){
-                        $orderby[0] .= ' '.$sort;
-                    }
-                }else{
-                    if(!empty($sort)){
-                        $orderby .= ' '.$sort;
-                    }
-                }
-                $select->order($orderby);
-            }
+        $resultSet = $this->tableGateway->select(function (Select $select) use ($offset, $limit){
             $select->limit(intval($limit))->offset(intval($offset));
         });
         return $resultSet;

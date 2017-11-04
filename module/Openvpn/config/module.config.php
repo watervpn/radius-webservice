@@ -8,7 +8,6 @@ return array(
             'Openvpn\\V1\\Rpc\\GetClientParam\\Controller' => 'Openvpn\\V1\\Rpc\\GetClientParam\\GetClientParamControllerFactory',
             'Openvpn\\V1\\Rpc\\SetClientParam\\Controller' => 'Openvpn\\V1\\Rpc\\SetClientParam\\SetClientParamControllerFactory',
             'Openvpn\\V1\\Rpc\\DeleteClientParam\\Controller' => 'Openvpn\\V1\\Rpc\\DeleteClientParam\\DeleteClientParamControllerFactory',
-            'Openvpn\\V1\\Rpc\\GetClientConfigs\\Controller' => 'Openvpn\\V1\\Rpc\\GetClientConfigs\\GetClientConfigsControllerFactory',
         ),
     ),
     'router' => array(
@@ -73,16 +72,6 @@ return array(
                     ),
                 ),
             ),
-            'openvpn.rpc.get-client-configs' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/openvpn/getClientConfigs',
-                    'defaults' => array(
-                        'controller' => 'Openvpn\\V1\\Rpc\\GetClientConfigs\\Controller',
-                        'action' => 'getClientConfigs',
-                    ),
-                ),
-            ),
         ),
     ),
     'zf-versioning' => array(
@@ -93,7 +82,6 @@ return array(
             3 => 'openvpn.rpc.get-client-param',
             4 => 'openvpn.rpc.set-client-param',
             5 => 'openvpn.rpc.delete-client-param',
-            6 => 'openvpn.rpc.get-client-configs',
         ),
     ),
     'zf-rpc' => array(
@@ -145,14 +133,6 @@ return array(
             ),
             'route_name' => 'openvpn.rpc.delete-client-param',
         ),
-        'Openvpn\\V1\\Rpc\\GetClientConfigs\\Controller' => array(
-            'service_name' => 'getClientConfigs',
-            'http_methods' => array(
-                0 => 'GET',
-                1 => 'POST',
-            ),
-            'route_name' => 'openvpn.rpc.get-client-configs',
-        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
@@ -162,7 +142,6 @@ return array(
             'Openvpn\\V1\\Rpc\\GetClientParam\\Controller' => 'Json',
             'Openvpn\\V1\\Rpc\\SetClientParam\\Controller' => 'Json',
             'Openvpn\\V1\\Rpc\\DeleteClientParam\\Controller' => 'Json',
-            'Openvpn\\V1\\Rpc\\GetClientConfigs\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'Openvpn\\V1\\Rpc\\GetClientConfig\\Controller' => array(
@@ -195,11 +174,6 @@ return array(
                 1 => 'application/json',
                 2 => 'application/*+json',
             ),
-            'Openvpn\\V1\\Rpc\\GetClientConfigs\\Controller' => array(
-                0 => 'application/vnd.openvpn.v1+json',
-                1 => 'application/json',
-                2 => 'application/*+json',
-            ),
         ),
         'content_type_whitelist' => array(
             'Openvpn\\V1\\Rpc\\GetClientConfig\\Controller' => array(
@@ -226,10 +200,6 @@ return array(
                 0 => 'application/vnd.openvpn.v1+json',
                 1 => 'application/json',
             ),
-            'Openvpn\\V1\\Rpc\\GetClientConfigs\\Controller' => array(
-                0 => 'application/vnd.openvpn.v1+json',
-                1 => 'application/json',
-            ),
         ),
     ),
     'zf-content-validation' => array(
@@ -241,9 +211,6 @@ return array(
         ),
         'Openvpn\\V1\\Rpc\\GetClientParam\\Controller' => array(
             'input_filter' => 'Openvpn\\V1\\Rpc\\GetClientParam\\Validator',
-        ),
-        'Openvpn\\V1\\Rpc\\GetClientConfigs\\Controller' => array(
-            'input_filter' => 'Openvpn\\V1\\Rpc\\GetClientConfigs\\Validator',
         ),
     ),
     'input_filter_specs' => array(
@@ -286,31 +253,6 @@ example ca1, us1, jp2',
                 'description' => 'radius account name or id',
             ),
         ),
-        'Openvpn\\V1\\Rpc\\Test\\Validator' => array(
-            0 => array(
-                'required' => false,
-                'validators' => array(),
-                'filters' => array(),
-                'name' => 'test',
-                'allow_empty' => true,
-            ),
-        ),
-        'Openvpn\\V1\\Rpc\\GetClientConfigs\\Validator' => array(
-            0 => array(
-                'required' => true,
-                'validators' => array(),
-                'filters' => array(),
-                'name' => 'account',
-                'description' => 'radius account id',
-            ),
-            1 => array(
-                'required' => true,
-                'validators' => array(),
-                'filters' => array(),
-                'name' => 'servers',
-                'description' => 'servers',
-            ),
-        ),
     ),
     'zf-mvc-auth' => array(
         'authorization' => array(
@@ -339,17 +281,6 @@ example ca1, us1, jp2',
             'Openvpn\\V1\\Rpc\\GetServerStatus\\Controller' => array(
                 'actions' => array(
                     'getServerStatus' => array(
-                        'GET' => true,
-                        'POST' => true,
-                        'PUT' => false,
-                        'PATCH' => false,
-                        'DELETE' => false,
-                    ),
-                ),
-            ),
-            'Openvpn\\V1\\Rpc\\GetClientConfigs\\Controller' => array(
-                'actions' => array(
-                    'getClientConfigs' => array(
                         'GET' => true,
                         'POST' => true,
                         'PUT' => false,

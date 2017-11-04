@@ -145,9 +145,9 @@ class Account
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function findAll($orderby=null, $sort=null, $offset = 0, $limit = 100){
+    public function findAll($offset = 0, $limit = 100){
         $accounts = array();
-        $checks = $this->checkMapper->findAll($orderby, $sort, $offset, $limit);
+        $checks = $this->checkMapper->findAll($offset, $limit);
         $groupValues = null;
         foreach($checks as $check){
             try{

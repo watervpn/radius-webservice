@@ -9,7 +9,7 @@ Abstract class AbstractEntity
     public function __construct(){
     }
 
-    protected function getMapper()
+    private function getMapper()
     {
         $mapperNameSpace = explode('\\', get_class($this) );
         return \Lib\ServiceManager::getMapper($mapperNameSpace[1], $mapperNameSpace[3]);
@@ -41,9 +41,9 @@ Abstract class AbstractEntity
         return $this->getMapper()->find($id);
     }
 
-    public function fetchAll($orderby=null, $sort=null, $offset=0, $limit=100)
+    public function fetchAll($offset =0, $limit=100)
     {
-        return $this->getMapper()->findAll($orderby, $sort, $offset, $limit);
+        return $this->getMapper()->findAll($offset, $limit);
     }
 
     /**
