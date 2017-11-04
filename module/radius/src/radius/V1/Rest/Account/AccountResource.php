@@ -71,7 +71,7 @@ class AccountResource extends AbstractResourceListener
      * @param  array $params
      * @return ApiProblem|mixed
      */
-    public function fetchAll($params = [])
+    public function fetchAll()
     {
         return $this->respondent->fetchAll();
     }

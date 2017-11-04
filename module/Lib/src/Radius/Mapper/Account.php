@@ -38,11 +38,11 @@ class Account
         // RadCheck
         try{
             // Update
-            $check = $this->checkMapper->findByUserAttrOp($data['id'], 'Cleartext-Password', ':=');
+            $check = $this->checkMapper->findByUserAttrOp($data['id'], 'User-Password', ':=');
             if(isset($data['passwd'])){ $check->setValue($data['passwd']); }
         }catch(Exception\ObjectNotFoundException $e){
             // Insert
-            $check = new CheckModel(null, $data['id'], 'Cleartext-Password', ':=', $data['passwd']);
+            $check = new CheckModel(null, $data['id'], 'User-Password', ':=', $data['passwd']);
         }
         // RadUserGroup
         $groups = array();
@@ -72,7 +72,7 @@ class Account
      * @return ApiProblem|mixed
      */
     public function delete(AccountModel $obj){
-        $check = $this->checkMapper->findByUserAttrOp($obj->getId(), 'Cleartext-Password', ':=');
+        $check = $this->checkMapper->findByUserAttrOp($obj->getId(), 'User-Password', ':=');
         try{
             $groups = array();
             foreach($obj->getGroups() as $groupName){
@@ -102,7 +102,7 @@ class Account
      */
     public function find($accountId){
         try{
-            $check = $this->checkMapper->findByUserAttrOp($accountId, 'Cleartext-Password', ':=');
+            $check = $this->checkMapper->findByUserAttrOp($accountId, 'User-Password', ':=');
             try{
                 $groups = $this->groupMapper->findByUser($accountId);
                 $groupValues = array_column($groups->toArray(), 'groupname');
