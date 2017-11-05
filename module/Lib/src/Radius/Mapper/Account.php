@@ -154,6 +154,7 @@ class Account
                 $groups = $this->groupMapper->findByUser($check->getUsername());
                 $groupValues = array_column($groups->toArray(), 'groupname');
             }catch( Exception\ObjectNotFoundException $e){
+                $groupValues = [];
                // if user has no group skip
             }
             (in_array('deactivite', $groupValues) ? $status = AccountModel::INACTIVE : $status = AccountModel::ACTIVE);
